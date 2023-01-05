@@ -1,0 +1,10 @@
+.profile__avatar {
+  grid-area: avatar;
+  display: block;
+  justify-self: center;
+  height: 120px;
+  width: 120px;
+  object-fit: contain;
+  object-position: center;
+  border-radius: 50%;
+}
