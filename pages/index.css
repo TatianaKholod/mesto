@@ -9,29 +9,18 @@
 /*profile*/
 @import '../bloks/profile/profile.css';
 @import '../bloks/profile/__avatar/profile__avatar.css';
-
+@import '../bloks/profile/__info-container/profile__info-container.css';
+@import '../bloks/profile/__info/profile__info.css';
 @import '../bloks/profile/__name/profile__name.css';
-@import '../bloks/profile/__edit-button/profile__edit-button.css';
 @import '../bloks/profile/__description/profile__description.css';
+@import '../bloks/profile/__edit-button/profile__edit-button.css';
 @import '../bloks/profile/__add-button/profile__add-button.css';
-
-.profile__info-container{
-  grid-area: info;
-  display: flex;
-}
-@media screen and (max-width: 570px) {
-  .profile__info-container{
-    justify-content: center;
-    margin-bottom: 5px;
-  }
-}
-.profile__info {}
-/*не уверена что так нужно рано, можно, наверное, и на более узкой ширине*/
-@media screen and (max-width: 700px) {
-  .profile__info {
-    /*padding добавила чтобы сходилось с макетом на ширине 320px*/
-    padding-left: 24px;
-    text-align: center;
-  }
-}
+/*gallery*/
+@import '../bloks/gallery/gallery.css';
+@import '../bloks/gallery/__card-list/gallery__card-list.css';
+@import '../bloks/gallery/__card/gallery__card.css';
+@import '../bloks/gallery/__card-image/gallery__card-image.css';
+@import '../bloks/gallery/__card-name/gallery__card-name.css';
+@import '../bloks/gallery/__text-name/gallery__text-name.css';
+@import '../bloks/gallery/__like-toggle/gallery__like-toggle.css';
 

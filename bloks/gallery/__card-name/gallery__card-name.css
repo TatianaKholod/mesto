@@ -1,0 +1,9 @@
+.gallery__card-name {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0;
+  padding: 25px 15px 31px 21px;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 1);
+}

@@ -1,4 +1,5 @@
 .profile {
+  margin-bottom: 50px;
   display: grid;
   grid-template-columns: 120px auto 150px;
   align-items: center;
@@ -16,6 +17,7 @@
 
 @media screen and (max-width: 425px) {
   .profile {
+    margin-bottom: 36px;
     grid-template-columns: auto;
     grid-template-areas: "avatar"
       "info"

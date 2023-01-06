@@ -1,0 +1,5 @@
+.gallery__card-image {
+  height: 282px;
+  object-fit: contain;
+  object-position: center;
+}

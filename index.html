@@ -13,18 +13,100 @@
     <img class="header__logo" alt="Логотип проекта - Место" src="./images/logo.svg">
   </header>
   <main>
-    <article class="profile common-section" aria-label="Профиль">
+    <section class="profile common-section" aria-label="Профиль">
       <img class="profile__avatar" src="./images/kusto.jpg" alt="">
-      <section class="profile__info-container" aria-label="Данные профиля">
+      <div class="profile__info-container">
         <div class="profile__info">
           <span class="profile__name">Жак-Ив Кусто</span>
           <p class="profile__description">Исследователь океана</p>
         </div>
         <button name="edit-button" class="profile__edit-button"></button>
-      </section>
+      </div>
       <button name="add-button" class="profile__add-button"></button>
-    </article>
+    </section>
+    <section class="gallery common-section" aria-label="Галерея">
+      <ul class="gallery__card-list">
+        <li>
+          <figure class="gallery__card">
+            <img src="./images/karachaevsk.jpg"
+              alt="Фотография Сентинского храма возведённого в первой половине X века на территории современной Карачаево-Черкесии"
+              class="gallery__card-image">
+            <figcaption class="gallery__card-name">
+              <p class="gallery__text-name">
+                Карачаевский
+              </p>
+              <button name="like-toggle" class="gallery__like-toggle"></button>
+            </figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure class="gallery__card">
+            <img src="./images/elbrus.jpg"
+              alt="Фотография с виднеющимися на горизонте двумя вершинами Эльбруса на фоне вечернего неба"
+              class="gallery__card-image">
+            <figcaption class="gallery__card-name">
+              <p class="gallery__text-name">
+                Гора Эльбрус
+              </p>
+              <button name="like-toggle" class="gallery__like-toggle"></button>
+            </figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure class="gallery__card">
+            <img src="./images/dombay.jpg"
+              alt="Фотография гороного пейзажа Домбая осенью"
+              class="gallery__card-image">
+            <figcaption class="gallery__card-name">
+              <p class="gallery__text-name">
+                Карачаевский
+              </p>
+              <button name="like-toggle" class="gallery__like-toggle"></button>
+            </figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure class="gallery__card">
+            <img src="./images/karachaevsk.jpg"
+              alt="Фотография Сентинского храма возведённого в первой половине X века на территории современной Карачаево-Черкесии"
+              class="gallery__card-image">
+            <figcaption class="gallery__card-name">
+              <p class="gallery__text-name">
+                Карачаевский
+              </p>
+              <button name="like-toggle" class="gallery__like-toggle"></button>
+            </figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure class="gallery__card">
+            <img src="./images/elbrus.jpg"
+              alt="Фотография с виднеющимися на горизонте двумя вершинами Эльбруса на фоне вечернего неба"
+              class="gallery__card-image">
+            <figcaption class="gallery__card-name">
+              <p class="gallery__text-name">
+                Гора Эльбрус
+              </p>
+              <button name="like-toggle" class="gallery__like-toggle"></button>
+            </figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure class="gallery__card">
+            <img src="./images/dombay.jpg"
+              alt="Фотография гороного пейзажа Домбая осенью"
+              class="gallery__card-image">
+            <figcaption class="gallery__card-name">
+              <p class="gallery__text-name">
+                Карачаево-Черкесия
+              </p>
+              <button name="like-toggle" class="gallery__like-toggle"></button>
+            </figcaption>
+          </figure>
+        </li>
+      </ul>
 
+    </section>
   </main>
   <footer>
 
