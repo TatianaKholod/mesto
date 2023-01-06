@@ -12,7 +12,6 @@
 @import '../bloks/profile/__info-container/profile__info-container.css';
 @import '../bloks/profile/__info/profile__info.css';
 @import '../bloks/profile/__name/profile__name.css';
-@import '../bloks/profile/__description/profile__description.css';
 @import '../bloks/profile/__edit-button/profile__edit-button.css';
 @import '../bloks/profile/__add-button/profile__add-button.css';
 /*gallery*/
@@ -24,3 +23,13 @@
 @import '../bloks/gallery/__text-name/gallery__text-name.css';
 @import '../bloks/gallery/__like-toggle/gallery__like-toggle.css';
 
+.footer{
+  margin-bottom:60px;
+}
+.footer__caption{
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.22;
+  color: rgba(84,84,84,1);
+}

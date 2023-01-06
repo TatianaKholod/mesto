@@ -16,10 +16,10 @@
     <section class="profile common-section" aria-label="Профиль">
       <img class="profile__avatar" src="./images/kusto.jpg" alt="">
       <div class="profile__info-container">
-        <div class="profile__info">
+        <p class="profile__info">
           <span class="profile__name">Жак-Ив Кусто</span>
-          <p class="profile__description">Исследователь океана</p>
-        </div>
+          Исследователь океана
+        </p>
         <button name="edit-button" class="profile__edit-button"></button>
       </div>
       <button name="add-button" class="profile__add-button"></button>
@@ -54,25 +54,10 @@
         </li>
         <li>
           <figure class="gallery__card">
-            <img src="./images/dombay.jpg"
-              alt="Фотография гороного пейзажа Домбая осенью"
-              class="gallery__card-image">
+            <img src="./images/dombay.jpg" alt="Фотография гороного пейзажа Домбая осенью" class="gallery__card-image">
             <figcaption class="gallery__card-name">
               <p class="gallery__text-name">
-                Карачаевский
-              </p>
-              <button name="like-toggle" class="gallery__like-toggle"></button>
-            </figcaption>
-          </figure>
-        </li>
-        <li>
-          <figure class="gallery__card">
-            <img src="./images/karachaevsk.jpg"
-              alt="Фотография Сентинского храма возведённого в первой половине X века на территории современной Карачаево-Черкесии"
-              class="gallery__card-image">
-            <figcaption class="gallery__card-name">
-              <p class="gallery__text-name">
-                Карачаевский
+                Домбай
               </p>
               <button name="like-toggle" class="gallery__like-toggle"></button>
             </figcaption>
@@ -93,8 +78,19 @@
         </li>
         <li>
           <figure class="gallery__card">
-            <img src="./images/dombay.jpg"
-              alt="Фотография гороного пейзажа Домбая осенью"
+            <img src="./images/dombay.jpg" alt="Фотография гороного пейзажа Домбая осенью" class="gallery__card-image">
+            <figcaption class="gallery__card-name">
+              <p class="gallery__text-name">
+                Домбай
+              </p>
+              <button name="like-toggle" class="gallery__like-toggle"></button>
+            </figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure class="gallery__card">
+            <img src="./images/karachaevsk.jpg"
+              alt="Фотография Сентинского храма возведённого в первой половине X века на территории современной Карачаево-Черкесии"
               class="gallery__card-image">
             <figcaption class="gallery__card-name">
               <p class="gallery__text-name">
@@ -108,8 +104,8 @@
 
     </section>
   </main>
-  <footer>
-
+  <footer class="footer common-section">
+    <p class="footer__caption">&copy; 2020 Mesto Russia</p>
   </footer>
 </body>
 
