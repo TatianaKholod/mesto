@@ -1,4 +1,5 @@
 .gallery__card-image {
+  box-sizing: inherit;
   height: 282px;
   object-fit: contain;
   object-position: center;

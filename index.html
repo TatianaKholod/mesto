@@ -20,9 +20,9 @@
           <span class="profile__name">Жак-Ив Кусто</span>
           Исследователь океана
         </p>
-        <button name="edit-button" class="profile__edit-button"></button>
+        <button name="edit-button" class="profile__edit-button button-hover"></button>
       </div>
-      <button name="add-button" class="profile__add-button"></button>
+      <button name="add-button" class="profile__add-button button-hover"></button>
     </section>
     <section class="gallery common-section" aria-label="Галерея">
       <ul class="gallery__card-list">
@@ -35,7 +35,7 @@
               <p class="gallery__text-name">
                 Карачаевский
               </p>
-              <button name="like-toggle" class="gallery__like-toggle"></button>
+              <button name="like-toggle" class="gallery__like-toggle button-hover"></button>
             </figcaption>
           </figure>
         </li>
@@ -48,7 +48,7 @@
               <p class="gallery__text-name">
                 Гора Эльбрус
               </p>
-              <button name="like-toggle" class="gallery__like-toggle"></button>
+              <button name="like-toggle" class="gallery__like-toggle button-hover"></button>
             </figcaption>
           </figure>
         </li>
@@ -59,7 +59,7 @@
               <p class="gallery__text-name">
                 Домбай
               </p>
-              <button name="like-toggle" class="gallery__like-toggle"></button>
+              <button name="like-toggle" class="gallery__like-toggle button-hover"></button>
             </figcaption>
           </figure>
         </li>
@@ -72,7 +72,7 @@
               <p class="gallery__text-name">
                 Гора Эльбрус
               </p>
-              <button name="like-toggle" class="gallery__like-toggle"></button>
+              <button name="like-toggle" class="gallery__like-toggle button-hover"></button>
             </figcaption>
           </figure>
         </li>
@@ -83,7 +83,7 @@
               <p class="gallery__text-name">
                 Домбай
               </p>
-              <button name="like-toggle" class="gallery__like-toggle"></button>
+              <button name="like-toggle" class="gallery__like-toggle button-hover"></button>
             </figcaption>
           </figure>
         </li>
@@ -96,7 +96,7 @@
               <p class="gallery__text-name">
                 Карачаево-Черкесия
               </p>
-              <button name="like-toggle" class="gallery__like-toggle"></button>
+              <button name="like-toggle" class="gallery__like-toggle button-hover"></button>
             </figcaption>
           </figure>
         </li>
@@ -107,6 +107,16 @@
   <footer class="footer common-section">
     <p class="footer__caption">&copy; 2020 Mesto Russia</p>
   </footer>
+  <div class="popup">
+    <form class="popup__container">
+      <button name="close-button" class="popup__button-close button-hover"></button>
+      <p class="popup__caption">Редактировать профиль</p>
+      <input name="profile-name" type="text" class="popup__profile-info">
+      <input name="profile-info" type="text" class="popup__profile-info">
+      <button name="save-button" type="submit" class="popup__button-save button-hover">Сохранить</button>
+    </form>
+  </div>
+  <script src="./scripts/index.js"></script>
 </body>
 
 </html>

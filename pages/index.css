@@ -3,6 +3,7 @@
 /*общие классы*/
 @import '../bloks/body/body.css';
 @import '../bloks/common-section/common-section.css';
+@import '../bloks/button-hover/button-hover.css';
 /*header*/
 @import '../bloks/header/header.css';
 @import '../bloks/header/__logo/header__logo.css';
@@ -22,14 +23,33 @@
 @import '../bloks/gallery/__card-name/gallery__card-name.css';
 @import '../bloks/gallery/__text-name/gallery__text-name.css';
 @import '../bloks/gallery/__like-toggle/gallery__like-toggle.css';
+@import '../bloks/gallery/__like-toggle/_on/gallery__like-toggle_on.css';
+/*footer*/
+@import '../bloks/footer/footer.css';
+@import '../bloks/footer/__caption/footer__caption.css';
+/*popup*/
+@import '../bloks/popup/popup.css';
+@import '../bloks/popup/_opened/popup_opened.css';
+@import '../bloks/popup/_opened/popup_opened.css';
+@import '../bloks/popup/__container/popup__container.css';
+@import '../bloks/popup/__button-close/popup__button-close.css';
+@import '../bloks/popup/__caption/popup__caption.css';
 
-.footer{
-  margin-bottom:60px;
+
+.popup__button-save{
+  height: 50px;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 1);
+  color: rgba(255, 255, 255, 1);
+  margin-top: 18px;
+  align-self: end;
 }
-.footer__caption{
-  font-style: normal;
-  font-weight: 400;
-  font-size: 18px;
-  line-height: 1.22;
-  color: rgba(84,84,84,1);
+.popup__profile-info{
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 1px;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.2);
+  margin-bottom: 30px;
 }

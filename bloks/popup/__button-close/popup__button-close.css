@@ -1,0 +1,22 @@
+.popup__button-close {
+  box-sizing: inherit;
+  height: 32px;
+  width: 32px;
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  background-image: url('../../../images/Close-Icon.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 32px;
+  transform: translate(398px, -40px);
+}
+
+@media screen and (max-width: 550px) {
+  .popup__button-close {
+    background-size: 20px;
+    height: 20px;
+    width: 20px;
+    transform: translate(242px, -30px);
+  }
+}
