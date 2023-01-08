@@ -7,6 +7,11 @@
   align-self: end;
 }
 
+/*индивидуальная прозрачность при наведении*/
+.popup__button-save:hover {
+  opacity: 0.8;
+}
+
 @media screen and (max-width: 550px) {
   .popup__button-save {
     margin-top: 15px;

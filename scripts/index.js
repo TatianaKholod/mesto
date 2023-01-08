@@ -1,5 +1,5 @@
-let ProfileContainer = document.querySelector('.profile__info-container');
-let editButton = ProfileContainer.querySelector('.profile__edit-button');
+let profileContainer = document.querySelector('.profile__info-container');
+let editButton = profileContainer.querySelector('.profile__edit-button');
 
 // Находим форму в DOM
 let formPopup = document.querySelector('.popup');
@@ -8,9 +8,9 @@ let closeButton = formPopup.querySelector('.popup__button-close');
 let nameInput = formPopup.querySelector('.popup__profile-info[name="profile-name"]');
 let jobInput = formPopup.querySelector('.popup__profile-info[name="profile-info"]');
 
-function DisplayPopup() {
-  let profileName = ProfileContainer.querySelector('.profile__name');
-  let profileJob = ProfileContainer.querySelector('.profile__job');
+function displayPopup() {
+  let profileName = profileContainer.querySelector('.profile__name');
+  let profileJob = profileContainer.querySelector('.profile__job');
   nameInput.value = profileName.textContent;
   jobInput.value = profileJob.textContent;
   formPopup.classList.add('popup_opened');
@@ -25,8 +25,8 @@ function ClosePopup() {
 function handleFormSubmit(evt) {
   evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
   // Выберите элементы, куда должны быть вставлены значения полей
-  let profileName = ProfileContainer.querySelector('.profile__name');
-  let profileJob = ProfileContainer.querySelector('.profile__job');
+  let profileName = profileContainer.querySelector('.profile__name');
+  let profileJob = profileContainer.querySelector('.profile__job');
   // Вставьте новые значения с помощью textContent
   profileName.textContent = nameInput.value;
   profileJob.textContent = jobInput.value;
@@ -34,7 +34,7 @@ function handleFormSubmit(evt) {
 }
 
 //отображаем попап
-editButton.addEventListener('click', DisplayPopup);
+editButton.addEventListener('click', displayPopup);
 //скрываем попап
 closeButton.addEventListener('click', ClosePopup);
 //сохраняем данные профиля

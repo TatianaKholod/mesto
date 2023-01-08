@@ -11,3 +11,8 @@
   background-position: center;
   text-align: right;
 }
+
+/*индивидуальная прозрачность при наведении*/
+.gallery__like-toggle:hover {
+  opacity: 0.5;
+}
