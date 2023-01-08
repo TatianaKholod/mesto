@@ -34,22 +34,5 @@
 @import '../bloks/popup/__container/popup__container.css';
 @import '../bloks/popup/__button-close/popup__button-close.css';
 @import '../bloks/popup/__caption/popup__caption.css';
-
-
-.popup__button-save{
-  height: 50px;
-  width: 100%;
-  background-color: rgba(0, 0, 0, 1);
-  color: rgba(255, 255, 255, 1);
-  margin-top: 18px;
-  align-self: end;
-}
-.popup__profile-info{
-  border-top: 0;
-  border-left: 0;
-  border-right: 0;
-  border-bottom: 1px;
-  border-style: solid;
-  border-color: rgba(0, 0, 0, 0.2);
-  margin-bottom: 30px;
-}
+@import '../bloks/popup/__profile-info/popup__profile-info.css';
+@import '../bloks/popup/__button-save/popup__button-save.css';
