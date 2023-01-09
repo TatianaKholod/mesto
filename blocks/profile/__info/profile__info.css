@@ -34,5 +34,6 @@
 @media screen and (max-width: 425px) {
   .profile__info {
     max-width: calc(100vw - 120px);
+    min-width: 200px;
   }
 }
