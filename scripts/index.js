@@ -12,7 +12,6 @@ let formPopup = document.querySelector('.popup__form');
 // Находим поля формы в DOM
 let nameInput = formPopup.querySelector('.popup__profile-info[name="name"]');
 let jobInput = formPopup.querySelector('.popup__profile-info[name="job"]');
-console.log(nameInput);
 
 function displayPopup() {
   nameInput.value = profileName.textContent;
