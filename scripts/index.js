@@ -1,17 +1,66 @@
 //данные профиля
-let profileContainer = document.querySelector('.profile__info-container');
-let editButton = profileContainer.querySelector('.profile__edit-button');
-let profileName = profileContainer.querySelector('.profile__name');
-let profileJob = profileContainer.querySelector('.profile__job');
+const profileContainer = document.querySelector('.profile__info-container');
+const editButton = profileContainer.querySelector('.profile__edit-button');
+const profileName = profileContainer.querySelector('.profile__name');
+const profileJob = profileContainer.querySelector('.profile__job');
 
 //данные попап
-let divPopup = document.querySelector('.popup');
-let closeButton = divPopup.querySelector('.popup__button-close');
+const divPopup = document.querySelector('.popup');
+const closeButton = divPopup.querySelector('.popup__button-close');
 // Находим форму в DOM
-let formPopup = document.querySelector('.popup__form[name="form-profile-edit"]');
+const formPopup = document.querySelector('.popup__form[name="form-profile-edit"]');
 // Находим поля формы в DOM
-let nameInput = formPopup.querySelector('.popup__text-input[name="name"]');
-let jobInput = formPopup.querySelector('.popup__text-input[name="job"]');
+const nameInput = formPopup.querySelector('.popup__text-input[name="name"]');
+const jobInput = formPopup.querySelector('.popup__text-input[name="job"]');
+
+//данные галереи
+const galleryList = document.querySelector('.gallery__card-list');
+
+//отображение одной карточки в начало или конец списка
+function addCard(cardName, cardImageSrc, markTop = true) {
+  const cardTemplate = document.querySelector('#card-template').content;
+  const cardGallery = cardTemplate.querySelector('.gallery__card').cloneNode(true);
+
+  const cardImage = cardGallery.querySelector('.gallery__card-image');
+  cardImage.src = cardImageSrc;
+  cardImage.alt = cardName;
+  cardGallery.querySelector('.gallery__text-name').textContent = cardName;
+
+  if (markTop) galleryList.prepend(cardGallery);
+  else galleryList.append(cardGallery);
+}
+//отображение карточек
+function fillGalleryList() {
+  //массив карточек для отображения
+  const initialCards = [
+    {
+      name: 'Санкт-Петербург',
+      link: '../images/Kazanskiy.jpg'
+    },
+    {
+      name: 'Петергоф',
+      link: '../images/Petergof.jpg'
+    },
+    {
+      name: 'Пушкин',
+      link: '../images/Pushkin.jpg'
+    },
+    {
+      name: 'Ломоносов',
+      link: '../images/Oranienbaum.jpg'
+    },
+    {
+      name: 'Выборг',
+      link: '../images/Viborg.jpg'
+    },
+    {
+      name: 'Карелия',
+      link: '../images/Ruskeala.jpg'
+    }
+  ];
+  initialCards.forEach((card) => addCard(card.name, card.link, false));
+}
+
 
 function displayPopup() {
   nameInput.value = profileName.textContent;
@@ -23,6 +72,7 @@ function closePopup() {
   divPopup.classList.remove('popup_opened');
 }
 
+
 // Обработчик «отправки» формы, хотя пока
 // она никуда отправляться не будет
 function handleFormSubmit(evt) {
@@ -32,6 +82,7 @@ function handleFormSubmit(evt) {
   closePopup();
 }
 
+fillGalleryList();
 //отображаем попап
 editButton.addEventListener('click', displayPopup);
 //скрываем попап

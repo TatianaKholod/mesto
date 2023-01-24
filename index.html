@@ -27,77 +27,7 @@
         type="button"></button>
     </section>
     <section class="gallery common-section" aria-label="Галерея">
-      <ul class="gallery__card-list">
-        <li class="gallery__card">
-          <img src="./images/Kazanskiy.jpg"
-            alt="Казанский сабор в Санкт-Петербурге"
-            class="gallery__card-image">
-          <div class="gallery__card-name">
-            <h2 class="gallery__text-name">
-              Санкт-Петербург
-            </h2>
-            <button name="like-toggle" class="gallery__like-toggle button-hover" aria-label="Нравится" type="button">
-            </button>
-          </div>
-        </li>
-        <li class="gallery__card">
-            <img src="./images/Petergof.jpg"
-              alt="Большой каскад в Петергофе"
-              class="gallery__card-image">
-            <div class="gallery__card-name">
-              <h2 class="gallery__text-name">
-                Петергоф
-              </h2>
-              <button name="like-toggle" class="gallery__like-toggle button-hover" aria-label="Нравится"
-                type="button"></button>
-            </div>
-        </li>
-        <li class="gallery__card">
-            <img src="./images/Pushkin.jpg" alt="Большой Екатерининский дворец в Пушкине" class="gallery__card-image">
-            <div class="gallery__card-name">
-              <h2 class="gallery__text-name">
-                Пушкин
-              </h2>
-              <button name="like-toggle" class="gallery__like-toggle button-hover" aria-label="Нравится"
-                type="button"></button>
-            </div>
-        </li>
-        <li class="gallery__card">
-            <img src="./images/Oranienbaum.jpg"
-              alt="Меньшиковский дворец в Ломоносове"
-              class="gallery__card-image">
-            <div class="gallery__card-name">
-              <h2 class="gallery__text-name">
-                Ломоносов
-              </h2>
-              <button name="like-toggle" class="gallery__like-toggle button-hover" aria-label="Нравится"
-                type="button"></button>
-            </div>
-        </li>
-        <li class="gallery__card">
-            <img src="./images/Viborg.jpg" alt="Выборгский замок" class="gallery__card-image">
-            <div class="gallery__card-name">
-              <h2 class="gallery__text-name">
-                Выборг
-              </h2>
-              <button name="like-toggle" class="gallery__like-toggle button-hover" aria-label="Нравится"
-                type="button"></button>
-            </div>
-        </li>
-        <li class="gallery__card">
-            <img src="./images/Ruskeala.jpg"
-              alt="Горный парк Рускеала в Карелии"
-              class="gallery__card-image">
-            <div class="gallery__card-name">
-              <h2 class="gallery__text-name">
-                Карелия
-              </h2>
-              <button name="like-toggle" class="gallery__like-toggle button-hover" aria-label="Нравится"
-                type="button"></button>
-            </div>
-        </li>
-      </ul>
-
+      <ul class="gallery__card-list"></ul>
     </section>
   </main>
   <footer class="footer common-section">
@@ -114,6 +44,16 @@
       </form>
     </div>
   </div>
+  <template id="card-template">
+    <li class="gallery__card">
+      <img class="gallery__card-image">
+      <div class="gallery__card-name">
+        <h2 class="gallery__text-name"></h2>
+        <button name="like-toggle" class="gallery__like-toggle button-hover" aria-label="Нравится"
+          type="button"></button>
+      </div>
+    </li>
+  </template>
   <script src="./scripts/index.js"></script>
 </body>
 
