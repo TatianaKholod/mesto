@@ -86,18 +86,25 @@ function fillGalleryList() {
 }
 
 fillGalleryList();
+
 //отображаем попап
 editButton.addEventListener('click', function () {
   setInputProfile();
   displayPopup(divPopupEditProfile);
 });
 addCardBtn.addEventListener('click', function () { displayPopup(divPopupAddCard) });
+
 //скрываем попап
 //теперь будем слушать нажатие на попап, а не на кнопку
 divPopupEditProfile.addEventListener('click', function (evt) { closePopup(evt, divPopupEditProfile) });
 divPopupAddCard.addEventListener('click', function (evt) { closePopup(evt, divPopupAddCard) });
+
+//переключаем лайк
+galleryList.addEventListener('click', function (evt) { if (evt.target.name === 'like-toggle') evt.target.classList.toggle('gallery__like-toggle_on') });
+
 //сохраняем данные профиля
 formProfilePopup.addEventListener('submit', handleFormSubmit);
+//добавляем карточку
 formAddPopup.addEventListener('submit', function (evt) {
   evt.preventDefault();
   galleryList.prepend(
@@ -106,3 +113,4 @@ formAddPopup.addEventListener('submit', function (evt) {
   );
   closePopup(evt, divPopupAddCard);
 });
+
