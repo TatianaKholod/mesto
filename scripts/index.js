@@ -37,7 +37,6 @@ const addCardBtn = document.querySelector('.profile__add-button');
 //данные попап
 const divPopupEditProfile = document.querySelector('.popup_form_editProfile');
 const divPopupAddCard = document.querySelector('.popup_form_addCard');
-const closePopupBtnArray = Array.from(document.querySelectorAll('.popup__button-close'));
 
 const formProfilePopup = document.querySelector('.popup__form[name="form-profile-edit"]');
 const nameInput = formProfilePopup.querySelector('.popup__text-input[name="name"]');
@@ -53,21 +52,23 @@ function displayPopup(divPopup) {
   divPopup.classList.add('popup_opened');
 }
 
-function closePopup(evt) {
-  if ((closePopupBtnArray.some(btn => btn === evt.target)) || (evt.currentTarget === evt.target))
-    this.classList.remove('popup_opened');
+function closePopup(evt, divPopup) {
+  if ((evt.type === 'submit') || (divPopup.querySelector('.popup__button-close') === evt.target) || (evt.currentTarget === evt.target))
+    divPopup.classList.remove('popup_opened');
 }
 
 function handleFormSubmit(evt) {
   evt.preventDefault();
   profileName.textContent = nameInput.value;
   profileJob.textContent = jobInput.value;
-  closePopup();
+  closePopup(evt, divPopupEditProfile);
 }
-function setInputProfile(){
+
+function setInputProfile() {
   nameInput.value = profileName.textContent;
   jobInput.value = profileJob.textContent;
 }
+
 function addCard(cardName, cardImageSrc) {
   const newCard = cardTemplate.querySelector('.gallery__card').cloneNode(true);
 
@@ -86,14 +87,22 @@ function fillGalleryList() {
 
 fillGalleryList();
 //отображаем попап
-editButton.addEventListener('click', (ev) => {
+editButton.addEventListener('click', function () {
   setInputProfile();
   displayPopup(divPopupEditProfile);
 });
-addCardBtn.addEventListener('click', (ev) => displayPopup(divPopupAddCard));
+addCardBtn.addEventListener('click', function () { displayPopup(divPopupAddCard) });
 //скрываем попап
 //теперь будем слушать нажатие на попап, а не на кнопку
-divPopupEditProfile.addEventListener('click', closePopup);
-divPopupAddCard.addEventListener('click', closePopup);
+divPopupEditProfile.addEventListener('click', function (evt) { closePopup(evt, divPopupEditProfile) });
+divPopupAddCard.addEventListener('click', function (evt) { closePopup(evt, divPopupAddCard) });
 //сохраняем данные профиля
 formProfilePopup.addEventListener('submit', handleFormSubmit);
+formAddPopup.addEventListener('submit', function (evt) {
+  evt.preventDefault();
+  galleryList.prepend(
+    addCard(divPopupAddCard.querySelector('.popup__text-input[name="name-card"]').value,
+            divPopupAddCard.querySelector('.popup__text-input[name="src-card"]').value)
+  );
+  closePopup(evt, divPopupAddCard);
+});
