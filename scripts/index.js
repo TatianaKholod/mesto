@@ -2,27 +2,27 @@
 const initialCards = [
   {
     name: 'Санкт-Петербург',
-    link: '../images/Kazanskiy.jpg'
+    link: './images/Kazanskiy.jpg'
   },
   {
     name: 'Петергоф',
-    link: '../images/Petergof.jpg'
+    link: './images/Petergof.jpg'
   },
   {
     name: 'Пушкин',
-    link: '../images/Pushkin.jpg'
+    link: './images/Pushkin.jpg'
   },
   {
     name: 'Ломоносов',
-    link: '../images/Oranienbaum.jpg'
+    link: './images/Oranienbaum.jpg'
   },
   {
     name: 'Выборг',
-    link: '../images/Viborg.jpg'
+    link: './images/Viborg.jpg'
   },
   {
     name: 'Карелия',
-    link: '../images/Ruskeala.jpg'
+    link: './images/Ruskeala.jpg'
   }
 ];
 
@@ -99,8 +99,14 @@ addCardBtn.addEventListener('click', function () { displayPopup(divPopupAddCard)
 divPopupEditProfile.addEventListener('click', function (evt) { closePopup(evt, divPopupEditProfile) });
 divPopupAddCard.addEventListener('click', function (evt) { closePopup(evt, divPopupAddCard) });
 
-//переключаем лайк
-galleryList.addEventListener('click', function (evt) { if (evt.target.name === 'like-toggle') evt.target.classList.toggle('gallery__like-toggle_on') });
+//переключаем лайк и удаление карточки
+galleryList.addEventListener('click', function (evt) {
+   if (evt.target.name === 'like-toggle') {
+    evt.target.classList.toggle('gallery__like-toggle_on');
+    return;
+   }
+   if (evt.target.name === 'card-delete') evt.target.parentNode.remove();
+   });
 
 //сохраняем данные профиля
 formProfilePopup.addEventListener('submit', handleFormSubmit);
@@ -109,8 +115,9 @@ formAddPopup.addEventListener('submit', function (evt) {
   evt.preventDefault();
   galleryList.prepend(
     addCard(divPopupAddCard.querySelector('.popup__text-input[name="name-card"]').value,
-            divPopupAddCard.querySelector('.popup__text-input[name="src-card"]').value)
+      divPopupAddCard.querySelector('.popup__text-input[name="src-card"]').value)
   );
   closePopup(evt, divPopupAddCard);
+  evt.target.reset();
 });
 

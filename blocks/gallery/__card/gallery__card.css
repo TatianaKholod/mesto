@@ -1,5 +1,7 @@
 .gallery__card {
+  position: relative;
   display: flex;
+  justify-content: space-between;
   flex-direction: column;
   margin: 0 auto;
   box-sizing: inherit;
