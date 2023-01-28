@@ -33,7 +33,7 @@
   <footer class="footer common-section">
     <p class="footer__caption">&copy; 2020 Mesto Russia</p>
   </footer>
-  <div class="popup">
+  <div class="popup popup_form_editProfile">
     <div class="popup__container">
       <button name="close-button" class="popup__button-close button-hover" aria-label="Закрыть" type="button"></button>
       <form name="form-profile-edit" class="popup__form">
@@ -44,6 +44,18 @@
       </form>
     </div>
   </div>
+  <div class="popup popup_form_addCard">
+    <div class="popup__container">
+      <button name="close-button" class="popup__button-close button-hover" aria-label="Закрыть" type="button"></button>
+      <form name="form-card-add" class="popup__form">
+        <h2 class="popup__caption">Новое место</h2>
+        <input name="name-card" type="text" class="popup__text-input" placeholder="Название" required>
+        <input name="src-card" type="text" class="popup__text-input" placeholder="Ссылка на картинку">
+        <button name="creat-card-btn" type="submit" class="popup__button-save button-hover">Создать</button>
+      </form>
+    </div>
+  </div>
+
   <template id="card-template">
     <li class="gallery__card">
       <img class="gallery__card-image">

@@ -32,21 +32,43 @@ const editButton = profileContainer.querySelector('.profile__edit-button');
 const profileName = profileContainer.querySelector('.profile__name');
 const profileJob = profileContainer.querySelector('.profile__job');
 
-//данные попап
-const divPopup = document.querySelector('.popup');
-const closeButton = divPopup.querySelector('.popup__button-close');
+const addCardBtn = document.querySelector('.profile__add-button');
 
-const formPopup = document.querySelector('.popup__form');
-const nameInput = formPopup.querySelector('.popup__text-input[name="name"]');
-const jobInput = formPopup.querySelector('.popup__text-input[name="job"]');
+//данные попап
+const divPopupEditProfile = document.querySelector('.popup_form_editProfile');
+const divPopupAddCard = document.querySelector('.popup_form_addCard');
+const closePopupBtnArray = Array.from(document.querySelectorAll('.popup__button-close'));
+
+const formProfilePopup = document.querySelector('.popup__form[name="form-profile-edit"]');
+const nameInput = formProfilePopup.querySelector('.popup__text-input[name="name"]');
+const jobInput = formProfilePopup.querySelector('.popup__text-input[name="job"]');
+
+const formAddPopup = document.querySelector('.popup__form[name="form-card-add"]');
 
 //данные галереи
 const galleryList = document.querySelector('.gallery__card-list');
 const cardTemplate = document.querySelector('#card-template').content;
 
+function displayPopup(divPopup) {
+  divPopup.classList.add('popup_opened');
+}
 
+function closePopup(evt) {
+  if ((closePopupBtnArray.some(btn => btn === evt.target)) || (evt.currentTarget === evt.target))
+    this.classList.remove('popup_opened');
+}
+
+function handleFormSubmit(evt) {
+  evt.preventDefault();
+  profileName.textContent = nameInput.value;
+  profileJob.textContent = jobInput.value;
+  closePopup();
+}
+function setInputProfile(){
+  nameInput.value = profileName.textContent;
+  jobInput.value = profileJob.textContent;
+}
 function addCard(cardName, cardImageSrc) {
-
   const newCard = cardTemplate.querySelector('.gallery__card').cloneNode(true);
 
   const cardImage = newCard.querySelector('.gallery__card-image');
@@ -62,30 +84,16 @@ function fillGalleryList() {
   galleryList.append(...arrayCards); //Добавить массив один раз более экономно по ресурсам, чем каждую карточку отдельно
 }
 
-function displayPopup() {
-  nameInput.value = profileName.textContent;
-  jobInput.value = profileJob.textContent;
-  divPopup.classList.add('popup_opened');
-}
-
-function closePopup() {
-  divPopup.classList.remove('popup_opened');
-}
-
-
-function handleFormSubmit(evt) {
-  evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
-  profileName.textContent = nameInput.value;
-  profileJob.textContent = jobInput.value;
-  closePopup();
-}
-
 fillGalleryList();
 //отображаем попап
-editButton.addEventListener('click', displayPopup);
+editButton.addEventListener('click', (ev) => {
+  setInputProfile();
+  displayPopup(divPopupEditProfile);
+});
+addCardBtn.addEventListener('click', (ev) => displayPopup(divPopupAddCard));
 //скрываем попап
-closeButton.addEventListener('click', closePopup);
+//теперь будем слушать нажатие на попап, а не на кнопку
+divPopupEditProfile.addEventListener('click', closePopup);
+divPopupAddCard.addEventListener('click', closePopup);
 //сохраняем данные профиля
-// Прикрепляем обработчик к форме:
-// он будет следить за событием “submit” - «отправка»
-formPopup.addEventListener('submit', handleFormSubmit);
+formProfilePopup.addEventListener('submit', handleFormSubmit);
