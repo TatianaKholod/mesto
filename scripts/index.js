@@ -36,7 +36,12 @@ const addCardBtn = document.querySelector('.profile__add-button');
 
 //данные попап
 const divPopupEditProfile = document.querySelector('.popup_form_editProfile');
+
 const divPopupAddCard = document.querySelector('.popup_form_addCard');
+
+const divPopupImage = document.querySelector('.popup_form_image');
+const popupImage = divPopupImage.querySelector('.popup__image');
+const popupImgCaption = divPopupImage.querySelector('.popup__image-caption');
 
 const formProfilePopup = document.querySelector('.popup__form[name="form-profile-edit"]');
 const nameInput = formProfilePopup.querySelector('.popup__text-input[name="name"]');
@@ -98,6 +103,7 @@ addCardBtn.addEventListener('click', function () { displayPopup(divPopupAddCard)
 //теперь будем слушать нажатие на попап, а не на кнопку
 divPopupEditProfile.addEventListener('click', function (evt) { closePopup(evt, divPopupEditProfile) });
 divPopupAddCard.addEventListener('click', function (evt) { closePopup(evt, divPopupAddCard) });
+divPopupImage.addEventListener('click', function (evt) { closePopup(evt, divPopupImage) });
 
 //переключаем лайк и удаление карточки
 galleryList.addEventListener('click', function (evt) {
@@ -105,7 +111,17 @@ galleryList.addEventListener('click', function (evt) {
     evt.target.classList.toggle('gallery__like-toggle_on');
     return;
    }
-   if (evt.target.name === 'card-delete') evt.target.parentNode.remove();
+   if (evt.target.name === 'card-delete'){
+    evt.target.parentNode.remove();
+    return
+   }
+   console.dir(evt.target);
+   if (evt.target.classList.contains('gallery__card-image')){
+    popupImage.src = evt.target.src;
+    popupImage.alt = evt.target.alt;
+    popupImgCaption.textContent = evt.target.alt;
+    displayPopup(divPopupImage);
+   }
    });
 
 //сохраняем данные профиля
