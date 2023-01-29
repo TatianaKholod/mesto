@@ -99,13 +99,12 @@ editButton.addEventListener('click', function () {
 });
 addCardBtn.addEventListener('click', function () { displayPopup(divPopupAddCard) });
 
-//скрываем попап
-//теперь будем слушать нажатие на попап, а не на кнопку
+//скрываем попап (теперь будем слушать нажатие на попап, а не на кнопку закрытия)
 divPopupEditProfile.addEventListener('click', function (evt) { closePopup(evt, divPopupEditProfile) });
 divPopupAddCard.addEventListener('click', function (evt) { closePopup(evt, divPopupAddCard) });
 divPopupImage.addEventListener('click', function (evt) { closePopup(evt, divPopupImage) });
 
-//переключаем лайк и удаление карточки
+//галерея - переключение лайка, удаление карточки, попап с картинкой
 galleryList.addEventListener('click', function (evt) {
    if (evt.target.name === 'like-toggle') {
     evt.target.classList.toggle('gallery__like-toggle_on');
@@ -113,9 +112,8 @@ galleryList.addEventListener('click', function (evt) {
    }
    if (evt.target.name === 'card-delete'){
     evt.target.parentNode.remove();
-    return
+    return;
    }
-   console.dir(evt.target);
    if (evt.target.classList.contains('gallery__card-image')){
     popupImage.src = evt.target.src;
     popupImage.alt = evt.target.alt;
