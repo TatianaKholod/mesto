@@ -8,4 +8,10 @@
   color: rgba(255, 255, 255, 1);
   background-color: #000000;
   /*сглаживать шрифты не стану - слишком мало текста*/
+  min-height: 100vh;
+  margin: 0 auto;
+  max-width: 880px;
+  /*нужно футер всегда удерживать внизу*/
+  display: flex;
+  flex-direction: column;
 }

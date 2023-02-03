@@ -39,7 +39,7 @@
       <form name="form-profile-edit" class="popup__form">
         <h2 class="popup__caption">Редактировать профиль</h2>
         <input name="name" type="text" class="popup__text-input" placeholder="Имя" required>
-        <input name="job" type="text" class="popup__text-input" placeholder="О себе">
+        <input name="job" type="text" class="popup__text-input" placeholder="О себе" required>
         <button name="save-button" type="submit" class="popup__button-save button-hover">Сохранить</button>
       </form>
     </div>
@@ -50,7 +50,7 @@
       <form name="form-card-add" class="popup__form">
         <h2 class="popup__caption">Новое место</h2>
         <input name="name-card" type="text" class="popup__text-input" placeholder="Название" required>
-        <input name="src-card" type="text" class="popup__text-input" placeholder="Ссылка на картинку">
+        <input name="src-card" type="url" class="popup__text-input" placeholder="Ссылка на картинку" required>
         <button name="creat-card-btn" type="submit" class="popup__button-save button-hover">Создать</button>
       </form>
     </div>
@@ -58,23 +58,23 @@
   <div class="popup popup_form_image">
     <figure class="popup__container-image">
       <button name="close-button" class="popup__button-close button-hover" aria-label="Закрыть" type="button"></button>
-      <img class="popup__image">
+      <img class="popup__image" src=".." alt="">
       <figcaption class="popup__image-caption"></figcaption>
     </figure>
   </div>
-    <template id="card-template">
-      <li class="gallery__card">
-        <img class="gallery__card-image">
-        <button name="card-delete" class="gallery__card-delete button-hover" aria-label="Удалить карточку"
+  <template id="card-template">
+    <li class="gallery__card">
+      <img class="gallery__card-image">
+      <button name="card-delete" class="gallery__card-delete button-hover" aria-label="Удалить карточку"
+        type="button"></button>
+      <div class="gallery__card-name">
+        <h2 class="gallery__text-name"></h2>
+        <button name="like-toggle" class="gallery__like-toggle button-hover" aria-label="Нравится"
           type="button"></button>
-        <div class="gallery__card-name">
-          <h2 class="gallery__text-name"></h2>
-          <button name="like-toggle" class="gallery__like-toggle button-hover" aria-label="Нравится"
-            type="button"></button>
-        </div>
-      </li>
-    </template>
-    <script src="./scripts/index.js"></script>
+      </div>
+    </li>
+  </template>
+  <script type="module" src="./scripts/index.js"></script>
 </body>
 
 </html>

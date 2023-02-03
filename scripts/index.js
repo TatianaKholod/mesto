@@ -1,38 +1,8 @@
-//массив карточек для отображения
-const initialCards = [
-  {
-    name: 'Санкт-Петербург',
-    link: './images/Kazanskiy.jpg'
-  },
-  {
-    name: 'Петергоф',
-    link: './images/Petergof.jpg'
-  },
-  {
-    name: 'Пушкин',
-    link: './images/Pushkin.jpg'
-  },
-  {
-    name: 'Ломоносов',
-    link: './images/Oranienbaum.jpg'
-  },
-  {
-    name: 'Выборг',
-    link: './images/Viborg.jpg'
-  },
-  {
-    name: 'Карелия',
-    link: './images/Ruskeala.jpg'
-  }
-];
-
+import { initialCards } from './cards.js'
 //данные профиля
 const profileContainer = document.querySelector('.profile__info-container');
-const editButton = profileContainer.querySelector('.profile__edit-button');
 const profileName = profileContainer.querySelector('.profile__name');
 const profileJob = profileContainer.querySelector('.profile__job');
-
-const addCardBtn = document.querySelector('.profile__add-button');
 
 //данные попап
 const divPopupEditProfile = document.querySelector('.popup_form_editProfile');
@@ -57,16 +27,19 @@ function displayPopup(divPopup) {
   divPopup.classList.add('popup_opened');
 }
 
-function closePopup(evt, divPopup) {
-  if ((evt.type === 'submit') || (divPopup.querySelector('.popup__button-close') === evt.target) || (evt.currentTarget === evt.target))
-    divPopup.classList.remove('popup_opened');
+function closePopup(divPopup) {
+  divPopup.classList.remove('popup_opened');
 }
 
-function handleFormSubmit(evt) {
+function callClosingPopup(button) {
+  button.addEventListener('click', () => closePopup(button.closest('.popup')));
+}
+
+function handleFormSubmitProfile(evt) {
   evt.preventDefault();
   profileName.textContent = nameInput.value;
   profileJob.textContent = jobInput.value;
-  closePopup(evt, divPopupEditProfile);
+  closePopup(divPopupEditProfile);
 }
 
 function setInputProfile() {
@@ -74,64 +47,57 @@ function setInputProfile() {
   jobInput.value = profileJob.textContent;
 }
 
-function addCard(cardName, cardImageSrc) {
+function creatCard(cardObj) {
   const newCard = cardTemplate.querySelector('.gallery__card').cloneNode(true);
 
   const cardImage = newCard.querySelector('.gallery__card-image');
-  cardImage.src = cardImageSrc;
-  cardImage.alt = cardName;
-  newCard.querySelector('.gallery__text-name').textContent = cardName;
+  cardImage.src = cardObj.link;
+  cardImage.alt = cardObj.name;
+  newCard.querySelector('.gallery__text-name').textContent = cardObj.name;
 
-  return newCard;
-}
-
-function fillGalleryList() {
-  const arrayCards = initialCards.map((card) => addCard(card.name, card.link));
-  galleryList.append(...arrayCards); //Добавить массив один раз более экономно по ресурсам, чем каждую карточку отдельно
-}
-
-fillGalleryList();
-
-//отображаем попап
-editButton.addEventListener('click', function () {
-  setInputProfile();
-  displayPopup(divPopupEditProfile);
-});
-addCardBtn.addEventListener('click', function () { displayPopup(divPopupAddCard) });
-
-//скрываем попап (теперь будем слушать нажатие на попап, а не на кнопку закрытия)
-divPopupEditProfile.addEventListener('click', function (evt) { closePopup(evt, divPopupEditProfile) });
-divPopupAddCard.addEventListener('click', function (evt) { closePopup(evt, divPopupAddCard) });
-divPopupImage.addEventListener('click', function (evt) { closePopup(evt, divPopupImage) });
-
-//галерея - переключение лайка, удаление карточки, попап с картинкой
-galleryList.addEventListener('click', function (evt) {
-   if (evt.target.name === 'like-toggle') {
-    evt.target.classList.toggle('gallery__like-toggle_on');
-    return;
-   }
-   if (evt.target.name === 'card-delete'){
-    evt.target.parentNode.remove();
-    return;
-   }
-   if (evt.target.classList.contains('gallery__card-image')){
+  newCard.querySelector('.gallery__like-toggle').addEventListener('click', (evt) => evt.target.classList.toggle('gallery__like-toggle_on'));
+  newCard.querySelector('.gallery__card-delete').addEventListener('click', (evt) => evt.target.closest('.gallery__card').remove());
+  newCard.querySelector('.gallery__card-image').addEventListener('click', (evt) => {
     popupImage.src = evt.target.src;
     popupImage.alt = evt.target.alt;
     popupImgCaption.textContent = evt.target.alt;
     displayPopup(divPopupImage);
-   }
-   });
+  });
+
+  return newCard;
+}
+
+function handleFormSubmitAddCard(evt) {
+  evt.preventDefault();
+  const cardObj = {
+    name: divPopupAddCard.querySelector('.popup__text-input[name="name-card"]').value,
+    link: divPopupAddCard.querySelector('.popup__text-input[name="src-card"]').value
+  };
+  renderCards([cardObj]);
+  closePopup(divPopupAddCard);
+  evt.target.reset();
+}
+
+function renderCards(arrObjCards) {
+  const arrayCards = arrObjCards.map((card) => creatCard(card));
+  galleryList.prepend(...arrayCards); //Добавить массив один раз более экономно по ресурсам, чем каждую карточку отдельно
+}
+
+renderCards(initialCards);
+
+//скрываем попап (в callClosingPopup слушаем кнопки закрытия для каждого попапа)
+document.querySelectorAll('.popup__button-close').forEach(callClosingPopup);
+
+//отображаем попап
+profileContainer.querySelector('.profile__edit-button').addEventListener('click', () => {
+  setInputProfile();
+  displayPopup(divPopupEditProfile);
+});
+
+document.querySelector('.profile__add-button').addEventListener('click', () => displayPopup(divPopupAddCard));
 
 //сохраняем данные профиля
-formProfilePopup.addEventListener('submit', handleFormSubmit);
+formProfilePopup.addEventListener('submit', handleFormSubmitProfile);
 //добавляем карточку
-formAddPopup.addEventListener('submit', function (evt) {
-  evt.preventDefault();
-  galleryList.prepend(
-    addCard(divPopupAddCard.querySelector('.popup__text-input[name="name-card"]').value,
-      divPopupAddCard.querySelector('.popup__text-input[name="src-card"]').value)
-  );
-  closePopup(evt, divPopupAddCard);
-  evt.target.reset();
-});
+formAddPopup.addEventListener('submit', handleFormSubmitAddCard);
 
