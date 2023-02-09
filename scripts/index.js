@@ -14,8 +14,8 @@ const popupImage = divPopupImage.querySelector('.popup__image');
 const popupImgCaption = divPopupImage.querySelector('.popup__image-caption');
 
 const formProfilePopup = document.querySelector('.popup__form[name="form-profile-edit"]');
-const nameInput = formProfilePopup.querySelector('.popup__text-input[name="name"]');
-const jobInput = formProfilePopup.querySelector('.popup__text-input[name="job"]');
+const nameInput = formProfilePopup.querySelector('.popup__input[name="name"]');
+const jobInput = formProfilePopup.querySelector('.popup__input[name="job"]');
 
 const formAddPopup = document.querySelector('.popup__form[name="form-card-add"]');
 
@@ -36,10 +36,11 @@ function callClosingPopup(button) {
 }
 
 function handleFormSubmitProfile(evt) {
+  const formPopup = evt.target;
   evt.preventDefault();
-  profileName.textContent = nameInput.value;
-  profileJob.textContent = jobInput.value;
-  closePopup(divPopupEditProfile);
+  profileName.textContent = formPopup['name'].value;
+  profileJob.textContent = formPopup['job'].value;
+  closePopup(formPopup.closest('.popup'));
 }
 
 function setInputProfile() {
@@ -67,23 +68,69 @@ function creatCard(cardObj) {
   return newCard;
 }
 
-function handleFormSubmitAddCard(evt) {
-  evt.preventDefault();
-  const cardObj = {
-    name: divPopupAddCard.querySelector('.popup__text-input[name="name-card"]').value,
-    link: divPopupAddCard.querySelector('.popup__text-input[name="src-card"]').value
-  };
-  renderCards([cardObj]);
-  closePopup(divPopupAddCard);
-  evt.target.reset();
-}
-
 function renderCards(arrObjCards) {
   const arrayCards = arrObjCards.map((card) => creatCard(card));
   galleryList.prepend(...arrayCards); //Добавить массив один раз более экономно по ресурсам, чем каждую карточку отдельно
 }
 
+function handleFormSubmitAddCard(evt) {
+  const formPopup = evt.target;
+  const cardObj = {
+    name: formPopup['name-card'].value,
+    link: formPopup['src-card'].value
+  };
+  evt.preventDefault();
+  renderCards([cardObj]);
+  closePopup(formPopup.closest('.popup'));
+  formPopup.reset();
+}
+//*******************************************
+const showInputError = (formPopup, inputElemPopup, errorMessage) => {
+  const errorElement = formPopup.querySelector(`.${inputElemPopup.name}-error`);
+  errorElement.textContent = errorMessage;
+};
+
+const hideInputError = (formPopup, inputElemPopup) => {
+  const errorElement = formPopup.querySelector(`.${inputElemPopup.name}-error`);
+  errorElement.textContent = '';
+};
+
+const checkInputValidity = (formPopup, inputElemPopup) => {
+  if (!inputElemPopup.validity.valid) {
+    showInputError(formPopup, inputElemPopup, inputElemPopup.validationMessage);
+  } else {
+    hideInputError(formPopup, inputElemPopup);
+  }
+};
+
+const hasInvalidInput = (inputListPopup) => {
+  return inputListPopup.some((inputElement) => {
+    return !inputElement.validity.valid;
+  })
+}
+
+const toggleButtonState = (inputListPopup, buttonElemPopup) => {
+  if (hasInvalidInput(inputListPopup))
+    buttonElemPopup.classList.add('popup_button_inactive')
+  else
+    buttonElemPopup.classList.remove('popup_button_inactive');
+}
+
+const setEventListenersImput = (formPopup) => {
+  const inputListPopup = Array.from(formPopup.querySelectorAll('.popup__input'));
+  const buttonElemPopup = formPopup.querySelector('.popup__button-save');
+  toggleButtonState(inputListPopup, buttonElemPopup);
+  inputListPopup.forEach((inputElemPopup) => {
+    inputElemPopup.addEventListener('input', function () {
+      checkInputValidity(formPopup, inputElemPopup);
+      toggleButtonState(inputListPopup, buttonElemPopup);
+    });
+  });
+}
+
+
 renderCards(initialCards);
+setEventListenersImput(formProfilePopup);
 
 //скрываем попап (в callClosingPopup слушаем кнопки закрытия для каждого попапа)
 document.querySelectorAll('.popup__button-close').forEach(callClosingPopup);

@@ -36,9 +36,11 @@
 @import '../blocks/popup/__button-close/popup__button-close.css';
 @import '../blocks/popup/__form/popup__form.css';
 @import '../blocks/popup/__caption/popup__caption.css';
-@import '../blocks/popup/__text-input/popup__text-input.css';
+@import '../blocks/popup/__input/popup__input.css';
 @import '../blocks/popup/__button-save/popup__button-save.css';
 @import '../blocks/popup/_form/popup_form_image.css';
 @import '../blocks/popup/__container-image/popup__container-image.css';
 @import '../blocks/popup/__image/popup__image.css';
 @import '../blocks/popup/__image-caption/popup__image-caption.css';
+@import '../blocks/popup/__input-error/popup__input-error.css';
+@import '../blocks/popup/_button/button_inactive.css';

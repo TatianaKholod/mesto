@@ -38,8 +38,10 @@
       <button name="close-button" class="popup__button-close button-hover" aria-label="Закрыть" type="button"></button>
       <form name="form-profile-edit" class="popup__form">
         <h2 class="popup__caption">Редактировать профиль</h2>
-        <input name="name" type="text" class="popup__text-input" placeholder="Имя" required>
-        <input name="job" type="text" class="popup__text-input" placeholder="О себе" required>
+        <input name="name" type="text" class="popup__input" placeholder="Имя" required minlength="2" maxlength="40">
+        <span class="popup__input-error name-error"></span>
+        <input name="job" type="text" class="popup__input" placeholder="О себе" required minlength="2" maxlength="200">
+        <span class="popup__input-error job-error"></span>
         <button name="save-button" type="submit" class="popup__button-save button-hover">Сохранить</button>
       </form>
     </div>
@@ -49,8 +51,8 @@
       <button name="close-button" class="popup__button-close button-hover" aria-label="Закрыть" type="button"></button>
       <form name="form-card-add" class="popup__form">
         <h2 class="popup__caption">Новое место</h2>
-        <input name="name-card" type="text" class="popup__text-input" placeholder="Название" required>
-        <input name="src-card" type="url" class="popup__text-input" placeholder="Ссылка на картинку" required>
+        <input name="name-card" type="text" class="popup__input" placeholder="Название" required>
+        <input name="src-card" type="url" class="popup__input" placeholder="Ссылка на картинку" required>
         <button name="creat-card-btn" type="submit" class="popup__button-save button-hover">Создать</button>
       </form>
     </div>
