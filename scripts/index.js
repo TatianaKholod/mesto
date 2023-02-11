@@ -13,23 +13,20 @@ function displayPopup(divPopup) {
   divPopup.classList.add('popup_opened');
 }
 
-function closePopup(divPopup) {
+function closePopup(evt, divPopup, buttonCloseElem = '') {
+  if ((evt.type != 'submit') && (buttonCloseElem != evt.target) && (evt.currentTarget != evt.target)) return;
   divPopup.classList.remove('popup_opened');
   //очистим сообщения валидации
   divPopup.querySelectorAll(".popup__input").forEach((inputElementPopup) => { hideInputError(inputElementPopup.closest('.popup__form'), inputElementPopup) });
 }
 
-function setEventListenersClose(button) {
-  button.addEventListener('click', () => closePopup(button.closest('.popup')));
-}
-
 function handleFormSubmitProfile(evt, { nameElement, jobElement }) {
   const formPopup = evt.target;
-  formPopup[save-button].setAttribute('disabled','disabled');
+  formPopup[save - button].setAttribute('disabled', 'disabled');
   evt.preventDefault();
   nameElement.textContent = formPopup['name'].value;
   jobElement.textContent = formPopup['job'].value;
-  closePopup(formPopup.closest('.popup'));
+  closePopup(evt, formPopup.closest('.popup'));
 }
 
 function setInputProfile(formPopupProfile, { nameElement, jobElement }) {
@@ -70,14 +67,14 @@ function renderCards(arrObjCards) {
 
 function handleFormSubmitAddCard(evt) {
   const formPopup = evt.target;
-  formPopup[creat-card-btn].setAttribute('disabled','disabled');
+  formPopup[creat - card - btn].setAttribute('disabled', 'disabled');
   const cardObj = {
     name: formPopup['name-card'].value,
     link: formPopup['src-card'].value
   };
   evt.preventDefault();
   renderCards([cardObj]);
-  closePopup(formPopup.closest('.popup'));
+  closePopup(evt, formPopup.closest('.popup'));
   formPopup.reset();
 }
 //*******************************************
@@ -132,6 +129,7 @@ const setEventListenersValidation = (formPopup) => {
 
 const setEventListenersForm = (formPopup) => {
   const formName = formPopup.attributes.name.value;
+  const divPopupElem = formPopup.closest('.popup');
   switch (formName) {
     case "form-profile-edit":
       //данные профиля
@@ -143,18 +141,21 @@ const setEventListenersForm = (formPopup) => {
       //слушатель на кнопку, вызывающую форму изменения профиля
       profileContainer.querySelector('.profile__edit-button').addEventListener('click', (evt) => {
         setInputProfile(formPopup, dataProfile);
-        displayPopup(formPopup.closest('.popup'));
+        displayPopup(divPopupElem);
       });
       //слушатель на submit формы
       formPopup.addEventListener('submit', (evt) => handleFormSubmitProfile(evt, dataProfile));
       break;
     case "form-card-add":
       //слушатель на кнопку, вызывающую форму добавления карточки
-      document.querySelector('.profile__add-button').addEventListener('click', () => displayPopup(formPopup.closest('.popup')));
+      document.querySelector('.profile__add-button').addEventListener('click', () => displayPopup(divPopupElem));
       //слушатель на submit формы
       formPopup.addEventListener('submit', handleFormSubmitAddCard);
       break;
   };
+  //слушатель для закрытия формы
+  const buttonCloseElem = divPopupElem.querySelector('.popup__button-close');
+  divPopupElem.addEventListener('click', (evt) => closePopup(evt, divPopupElem, buttonCloseElem));
 }
 
 const initializeForms = () => {
@@ -167,6 +168,3 @@ const initializeForms = () => {
 
 renderCards(initialCards);
 initializeForms();
-
-//скрываем попап
-document.querySelectorAll('.popup__button-close').forEach(setEventListenersClose);
