@@ -14,7 +14,11 @@ function displayPopup(divPopup) {
 }
 
 function closePopup(evt, divPopup, buttonCloseElem = '') {
-  if ((evt.type != 'submit') && (buttonCloseElem != evt.target) && (evt.currentTarget != evt.target)) return;
+  if ((evt.type != 'submit')
+    && (buttonCloseElem != evt.target)
+    && (evt.currentTarget != evt.target)
+    && (evt.type != 'keydown'))
+     return;
   divPopup.classList.remove('popup_opened');
   //очистим сообщения валидации и погасим кнопку
   divPopup.querySelectorAll(".popup__input").forEach((inputElementPopup) => { hideInputError(inputElementPopup.closest('.popup__form'), inputElementPopup) });
@@ -174,3 +178,10 @@ const initializeForms = () => {
 
 renderCards(initialCards);
 initializeForms();
+
+document.addEventListener('keydown', (evt) => {
+  if (evt.key != 'Escape') return;
+  const divPopupElem = document.querySelector(".popup_opened");
+  closePopup(evt, divPopupElem);
+}
+);
