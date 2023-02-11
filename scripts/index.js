@@ -16,13 +16,14 @@ function displayPopup(divPopup) {
 function closePopup(evt, divPopup, buttonCloseElem = '') {
   if ((evt.type != 'submit') && (buttonCloseElem != evt.target) && (evt.currentTarget != evt.target)) return;
   divPopup.classList.remove('popup_opened');
-  //очистим сообщения валидации
+  //очистим сообщения валидации и погасим кнопку
   divPopup.querySelectorAll(".popup__input").forEach((inputElementPopup) => { hideInputError(inputElementPopup.closest('.popup__form'), inputElementPopup) });
+  if (evt.type === 'submit') inactiveBtnSubmit(evt.submitter);
 }
 
 function handleFormSubmitProfile(evt, { nameElement, jobElement }) {
   const formPopup = evt.target;
-  formPopup[save - button].setAttribute('disabled', 'disabled');
+  formPopup['save-button'].setAttribute('disabled', 'disabled');
   evt.preventDefault();
   nameElement.textContent = formPopup['name'].value;
   jobElement.textContent = formPopup['job'].value;
@@ -67,7 +68,7 @@ function renderCards(arrObjCards) {
 
 function handleFormSubmitAddCard(evt) {
   const formPopup = evt.target;
-  formPopup[creat - card - btn].setAttribute('disabled', 'disabled');
+  formPopup['creat-card-btn'].setAttribute('disabled', 'disabled');
   const cardObj = {
     name: formPopup['name-card'].value,
     link: formPopup['src-card'].value
@@ -104,25 +105,30 @@ const hasInvalidInput = (inputListPopup) => {
   })
 }
 
-const toggleButtonState = (inputListPopup, buttonElemPopup) => {
-  if (hasInvalidInput(inputListPopup)) {
-    buttonElemPopup.classList.add('popup_button_inactive');
-    buttonElemPopup.setAttribute('disabled', 'disabled');
-  }
-  else {
-    buttonElemPopup.classList.remove('popup_button_inactive');
-    buttonElemPopup.removeAttribute('disabled');
-  };
+const activeBtnSubmit = (buttonSubmitElem) => {
+  buttonSubmitElem.classList.remove('popup_button_inactive');
+  buttonSubmitElem.removeAttribute('disabled');
+}
+const inactiveBtnSubmit = (buttonSubmitElem) => {
+  buttonSubmitElem.classList.add('popup_button_inactive');
+  buttonSubmitElem.setAttribute('disabled', 'disabled');
+}
+
+const toggleButtonState = (inputListPopup, buttonSubmitElem) => {
+  if (hasInvalidInput(inputListPopup))
+    inactiveBtnSubmit(buttonSubmitElem)
+  else
+    activeBtnSubmit(buttonSubmitElem);
 }
 
 const setEventListenersValidation = (formPopup) => {
   const inputListPopup = Array.from(formPopup.querySelectorAll('.popup__input'));
-  const buttonElemPopup = formPopup.querySelector('.popup__button-save');
-  toggleButtonState(inputListPopup, buttonElemPopup);
+  const buttonSubmitElem = formPopup.querySelector('.popup__button-save');
+  toggleButtonState(inputListPopup, buttonSubmitElem);
   inputListPopup.forEach((inputElemPopup) => {
     inputElemPopup.addEventListener('input', function () {
       checkInputValidity(formPopup, inputElemPopup);
-      toggleButtonState(inputListPopup, buttonElemPopup);
+      toggleButtonState(inputListPopup, buttonSubmitElem);
     });
   });
 }
