@@ -44,3 +44,4 @@
 @import '../blocks/popup/__image-caption/popup__image-caption.css';
 @import '../blocks/popup/__input-error/popup__input-error.css';
 @import '../blocks/popup/_button/button_inactive.css';
+@import '../blocks/popup/__input/_type/popup__input_type_error.css';

@@ -1,23 +1,9 @@
 import { initialCards } from './cards.js'
-//данные профиля
-const profileContainer = document.querySelector('.profile__info-container');
-const profileName = profileContainer.querySelector('.profile__name');
-const profileJob = profileContainer.querySelector('.profile__job');
 
-//данные попап
-const divPopupEditProfile = document.querySelector('.popup_form_editProfile');
-
-const divPopupAddCard = document.querySelector('.popup_form_addCard');
-
+//данные попап с картинкой
 const divPopupImage = document.querySelector('.popup_form_image');
 const popupImage = divPopupImage.querySelector('.popup__image');
 const popupImgCaption = divPopupImage.querySelector('.popup__image-caption');
-
-const formProfilePopup = document.querySelector('.popup__form[name="form-profile-edit"]');
-const nameInput = formProfilePopup.querySelector('.popup__input[name="name"]');
-const jobInput = formProfilePopup.querySelector('.popup__input[name="job"]');
-
-const formAddPopup = document.querySelector('.popup__form[name="form-card-add"]');
 
 //данные галереи
 const galleryList = document.querySelector('.gallery__card-list');
@@ -29,23 +15,32 @@ function displayPopup(divPopup) {
 
 function closePopup(divPopup) {
   divPopup.classList.remove('popup_opened');
+  //очистим сообщения валидации
+  divPopup.querySelectorAll(".popup__input").forEach((inputElementPopup) => { hideInputError(inputElementPopup.closest('.popup__form'), inputElementPopup) });
 }
 
-function callClosingPopup(button) {
+function setEventListenersClose(button) {
   button.addEventListener('click', () => closePopup(button.closest('.popup')));
 }
 
-function handleFormSubmitProfile(evt) {
+function handleFormSubmitProfile(evt, { nameElement, jobElement }) {
   const formPopup = evt.target;
+  formPopup[save-button].setAttribute('disabled','disabled');
   evt.preventDefault();
-  profileName.textContent = formPopup['name'].value;
-  profileJob.textContent = formPopup['job'].value;
+  nameElement.textContent = formPopup['name'].value;
+  jobElement.textContent = formPopup['job'].value;
   closePopup(formPopup.closest('.popup'));
 }
 
-function setInputProfile() {
-  nameInput.value = profileName.textContent;
-  jobInput.value = profileJob.textContent;
+function setInputProfile(formPopupProfile, { nameElement, jobElement }) {
+  const nameInputElem = formPopupProfile["name"];
+  const jobInputElem = formPopupProfile["job"];
+  const saveBtnElem = formPopupProfile["save-button"];
+
+  nameInputElem.value = nameElement.textContent;
+  jobInputElem.value = jobElement.textContent;
+
+  toggleButtonState([nameInputElem, jobInputElem], saveBtnElem);
 }
 
 function creatCard(cardObj) {
@@ -75,6 +70,7 @@ function renderCards(arrObjCards) {
 
 function handleFormSubmitAddCard(evt) {
   const formPopup = evt.target;
+  formPopup[creat-card-btn].setAttribute('disabled','disabled');
   const cardObj = {
     name: formPopup['name-card'].value,
     link: formPopup['src-card'].value
@@ -88,11 +84,13 @@ function handleFormSubmitAddCard(evt) {
 const showInputError = (formPopup, inputElemPopup, errorMessage) => {
   const errorElement = formPopup.querySelector(`.${inputElemPopup.name}-error`);
   errorElement.textContent = errorMessage;
+  inputElemPopup.classList.add('popup__input_type_error');
 };
 
 const hideInputError = (formPopup, inputElemPopup) => {
   const errorElement = formPopup.querySelector(`.${inputElemPopup.name}-error`);
   errorElement.textContent = '';
+  inputElemPopup.classList.remove('popup__input_type_error');
 };
 
 const checkInputValidity = (formPopup, inputElemPopup) => {
@@ -110,13 +108,17 @@ const hasInvalidInput = (inputListPopup) => {
 }
 
 const toggleButtonState = (inputListPopup, buttonElemPopup) => {
-  if (hasInvalidInput(inputListPopup))
-    buttonElemPopup.classList.add('popup_button_inactive')
-  else
+  if (hasInvalidInput(inputListPopup)) {
+    buttonElemPopup.classList.add('popup_button_inactive');
+    buttonElemPopup.setAttribute('disabled', 'disabled');
+  }
+  else {
     buttonElemPopup.classList.remove('popup_button_inactive');
+    buttonElemPopup.removeAttribute('disabled');
+  };
 }
 
-const setEventListenersImput = (formPopup) => {
+const setEventListenersValidation = (formPopup) => {
   const inputListPopup = Array.from(formPopup.querySelectorAll('.popup__input'));
   const buttonElemPopup = formPopup.querySelector('.popup__button-save');
   toggleButtonState(inputListPopup, buttonElemPopup);
@@ -128,23 +130,43 @@ const setEventListenersImput = (formPopup) => {
   });
 }
 
+const setEventListenersForm = (formPopup) => {
+  const formName = formPopup.attributes.name.value;
+  switch (formName) {
+    case "form-profile-edit":
+      //данные профиля
+      const profileContainer = document.querySelector('.profile__info-container');
+      const dataProfile = {
+        nameElement: profileContainer.querySelector('.profile__name'),
+        jobElement: profileContainer.querySelector('.profile__job')
+      };
+      //слушатель на кнопку, вызывающую форму изменения профиля
+      profileContainer.querySelector('.profile__edit-button').addEventListener('click', (evt) => {
+        setInputProfile(formPopup, dataProfile);
+        displayPopup(formPopup.closest('.popup'));
+      });
+      //слушатель на submit формы
+      formPopup.addEventListener('submit', (evt) => handleFormSubmitProfile(evt, dataProfile));
+      break;
+    case "form-card-add":
+      //слушатель на кнопку, вызывающую форму добавления карточки
+      document.querySelector('.profile__add-button').addEventListener('click', () => displayPopup(formPopup.closest('.popup')));
+      //слушатель на submit формы
+      formPopup.addEventListener('submit', handleFormSubmitAddCard);
+      break;
+  };
+}
+
+const initializeForms = () => {
+  const formList = document.querySelectorAll('.popup__form');
+  formList.forEach((formPopup) => {
+    setEventListenersForm(formPopup,);
+    setEventListenersValidation(formPopup);
+  });
+}
 
 renderCards(initialCards);
-setEventListenersImput(formProfilePopup);
+initializeForms();
 
-//скрываем попап (в callClosingPopup слушаем кнопки закрытия для каждого попапа)
-document.querySelectorAll('.popup__button-close').forEach(callClosingPopup);
-
-//отображаем попап
-profileContainer.querySelector('.profile__edit-button').addEventListener('click', () => {
-  setInputProfile();
-  displayPopup(divPopupEditProfile);
-});
-
-document.querySelector('.profile__add-button').addEventListener('click', () => displayPopup(divPopupAddCard));
-
-//сохраняем данные профиля
-formProfilePopup.addEventListener('submit', handleFormSubmitProfile);
-//добавляем карточку
-formAddPopup.addEventListener('submit', handleFormSubmitAddCard);
-
+//скрываем попап
+document.querySelectorAll('.popup__button-close').forEach(setEventListenersClose);

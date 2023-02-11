@@ -11,14 +11,6 @@
   line-height: 2.5;
 }
 
-.popup__input:valid {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-}
-
-.popup__input:invalid {
-  border-bottom: 1px solid rgba(255, 0, 0, 1);
-}
-
 @media screen and (max-width: 550px) {
   .popup__input {
     width: 232px;
