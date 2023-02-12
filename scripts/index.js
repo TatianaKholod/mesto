@@ -10,8 +10,15 @@ const popupImgCaption = divPopupImage.querySelector('.popup__image-caption');
 const galleryList = document.querySelector('.gallery__card-list');
 const cardTemplate = document.querySelector('#card-template').content;
 
+const handleKeydown = (evt) => {
+  if (evt.key != 'Escape') return;
+  const divPopupElem = document.querySelector(".popup_opened");
+  closePopup(evt, divPopupElem);
+}
+
 function displayPopup(divPopup) {
   divPopup.classList.add('popup_opened');
+  document.addEventListener('keydown', handleKeydown);
 }
 
 function closePopup(evt, divPopup, buttonCloseElem = '') {
@@ -22,8 +29,12 @@ function closePopup(evt, divPopup, buttonCloseElem = '') {
     return;
   divPopup.classList.remove('popup_opened');
   //очистим сообщения валидации и погасим кнопку
-  divPopup.querySelectorAll(".popup__input").forEach((inputElementPopup) => { hideInputError(inputElementPopup.closest('.popup__form'), inputElementPopup) });
+  divPopup.querySelectorAll(".popup__input").forEach((inputElementPopup) => {
+    hideInputError(inputElementPopup.closest('.popup__form'), inputElementPopup, configForm.inputErrorClass)
+  });
   if (evt.type === 'submit') inactiveBtnSubmit(evt.submitter, configForm.inactiveButtonClass);
+
+  document.removeEventListener('keydown', handleKeydown);
 }
 
 function handleFormSubmitProfile(evt, { nameElement, jobElement }) {
@@ -84,13 +95,12 @@ function handleFormSubmitAddCard(evt) {
   formPopup.reset();
 }
 
-const setEventListenersForm = (formPopup) => {
-  const formName = formPopup.attributes.name.value;
-  const divPopupElem = formPopup.closest('.popup');
+const setEventListenersPopup = (divPopup) => {
+  //console.dir(divPopup.className.includes('popup_form_editProfile'));
+  const formPopup = divPopup.querySelector(configForm.formSelector);
 
-  switch (formName) {
-
-    case "form-profile-edit":
+  switch (true) {
+    case divPopup.className.includes('popup_form_editProfile'):
       //данные профиля
       const profileContainer = document.querySelector('.profile__info-container');
       const dataProfile = {
@@ -100,38 +110,29 @@ const setEventListenersForm = (formPopup) => {
       //слушатель на кнопку, вызывающую форму изменения профиля
       profileContainer.querySelector('.profile__edit-button').addEventListener('click', (evt) => {
         setInputProfile(formPopup, dataProfile);
-        displayPopup(divPopupElem);
+        displayPopup(divPopup);
       });
       //слушатель на submit формы
       formPopup.addEventListener('submit', (evt) => handleFormSubmitProfile(evt, dataProfile));
       break;
 
-    case "form-card-add":
+    case divPopup.className.includes('popup_form_addCard'):
       //слушатель на кнопку, вызывающую форму добавления карточки
-      document.querySelector('.profile__add-button').addEventListener('click', () => displayPopup(divPopupElem));
+      document.querySelector('.profile__add-button').addEventListener('click', () => displayPopup(divPopup));
       //слушатель на submit формы
       formPopup.addEventListener('submit', handleFormSubmitAddCard);
       break;
   };
-  //слушатель для закрытия формы
-  const buttonCloseElem = divPopupElem.querySelector('.popup__button-close');
-  divPopupElem.addEventListener('click', (evt) => closePopup(evt, divPopupElem, buttonCloseElem));
+  //слушатель для закрытия попапов
+  const buttonCloseElem = divPopup.querySelector('.popup__button-close');
+  divPopup.addEventListener('click', (evt) => closePopup(evt, divPopup, buttonCloseElem));
 }
 
 const initializeForms = () => {
-  const formList = document.querySelectorAll(configForm.formSelector);
-
-  formList.forEach((formPopup) => {
-    setEventListenersForm(formPopup);
-    //setEventListenersValidation(formPopup, configForm); в требованиях нужно в отдельную функцию. А счастье было так возможно...
+  const popupList = document.querySelectorAll('.popup');
+  popupList.forEach((divPopup) => {
+    setEventListenersPopup(divPopup);
   });
-
-  document.addEventListener('keydown', (evt) => {
-    if (evt.key != 'Escape') return;
-    const divPopupElem = document.querySelector(".popup_opened");
-    closePopup(evt, divPopupElem);
-  }
-  );
 }
 
 renderCards(initialCards);
