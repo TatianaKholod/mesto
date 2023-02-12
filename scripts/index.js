@@ -1,4 +1,5 @@
 import { initialCards } from './cards.js'
+import { configForm } from './constans/index_const.js'
 
 //данные попап с картинкой
 const divPopupImage = document.querySelector('.popup_form_image');
@@ -15,14 +16,14 @@ function displayPopup(divPopup) {
 
 function closePopup(evt, divPopup, buttonCloseElem = '') {
   if ((evt.type != 'submit')
+    && (evt.type != 'keydown')
     && (buttonCloseElem != evt.target)
-    && (evt.currentTarget != evt.target)
-    && (evt.type != 'keydown'))
-     return;
+    && (evt.currentTarget != evt.target))
+    return;
   divPopup.classList.remove('popup_opened');
   //очистим сообщения валидации и погасим кнопку
   divPopup.querySelectorAll(".popup__input").forEach((inputElementPopup) => { hideInputError(inputElementPopup.closest('.popup__form'), inputElementPopup) });
-  if (evt.type === 'submit') inactiveBtnSubmit(evt.submitter);
+  if (evt.type === 'submit') inactiveBtnSubmit(evt.submitter, configForm.inactiveButtonClass);
 }
 
 function handleFormSubmitProfile(evt, { nameElement, jobElement }) {
@@ -42,7 +43,7 @@ function setInputProfile(formPopupProfile, { nameElement, jobElement }) {
   nameInputElem.value = nameElement.textContent;
   jobInputElem.value = jobElement.textContent;
 
-  toggleButtonState([nameInputElem, jobInputElem], saveBtnElem);
+  toggleButtonState([nameInputElem, jobInputElem], saveBtnElem, configForm.inactiveButtonClass);
 }
 
 function creatCard(cardObj) {
@@ -82,65 +83,13 @@ function handleFormSubmitAddCard(evt) {
   closePopup(evt, formPopup.closest('.popup'));
   formPopup.reset();
 }
-//*******************************************
-const showInputError = (formPopup, inputElemPopup, errorMessage) => {
-  const errorElement = formPopup.querySelector(`.${inputElemPopup.name}-error`);
-  errorElement.textContent = errorMessage;
-  inputElemPopup.classList.add('popup__input_type_error');
-};
-
-const hideInputError = (formPopup, inputElemPopup) => {
-  const errorElement = formPopup.querySelector(`.${inputElemPopup.name}-error`);
-  errorElement.textContent = '';
-  inputElemPopup.classList.remove('popup__input_type_error');
-};
-
-const checkInputValidity = (formPopup, inputElemPopup) => {
-  if (!inputElemPopup.validity.valid) {
-    showInputError(formPopup, inputElemPopup, inputElemPopup.validationMessage);
-  } else {
-    hideInputError(formPopup, inputElemPopup);
-  }
-};
-
-const hasInvalidInput = (inputListPopup) => {
-  return inputListPopup.some((inputElement) => {
-    return !inputElement.validity.valid;
-  })
-}
-
-const activeBtnSubmit = (buttonSubmitElem) => {
-  buttonSubmitElem.classList.remove('popup_button_inactive');
-  buttonSubmitElem.removeAttribute('disabled');
-}
-const inactiveBtnSubmit = (buttonSubmitElem) => {
-  buttonSubmitElem.classList.add('popup_button_inactive');
-  buttonSubmitElem.setAttribute('disabled', 'disabled');
-}
-
-const toggleButtonState = (inputListPopup, buttonSubmitElem) => {
-  if (hasInvalidInput(inputListPopup))
-    inactiveBtnSubmit(buttonSubmitElem)
-  else
-    activeBtnSubmit(buttonSubmitElem);
-}
-
-const setEventListenersValidation = (formPopup) => {
-  const inputListPopup = Array.from(formPopup.querySelectorAll('.popup__input'));
-  const buttonSubmitElem = formPopup.querySelector('.popup__button-save');
-  toggleButtonState(inputListPopup, buttonSubmitElem);
-  inputListPopup.forEach((inputElemPopup) => {
-    inputElemPopup.addEventListener('input', function () {
-      checkInputValidity(formPopup, inputElemPopup);
-      toggleButtonState(inputListPopup, buttonSubmitElem);
-    });
-  });
-}
 
 const setEventListenersForm = (formPopup) => {
   const formName = formPopup.attributes.name.value;
   const divPopupElem = formPopup.closest('.popup');
+
   switch (formName) {
+
     case "form-profile-edit":
       //данные профиля
       const profileContainer = document.querySelector('.profile__info-container');
@@ -156,6 +105,7 @@ const setEventListenersForm = (formPopup) => {
       //слушатель на submit формы
       formPopup.addEventListener('submit', (evt) => handleFormSubmitProfile(evt, dataProfile));
       break;
+
     case "form-card-add":
       //слушатель на кнопку, вызывающую форму добавления карточки
       document.querySelector('.profile__add-button').addEventListener('click', () => displayPopup(divPopupElem));
@@ -169,19 +119,21 @@ const setEventListenersForm = (formPopup) => {
 }
 
 const initializeForms = () => {
-  const formList = document.querySelectorAll('.popup__form');
+  const formList = document.querySelectorAll(configForm.formSelector);
+
   formList.forEach((formPopup) => {
-    setEventListenersForm(formPopup,);
-    setEventListenersValidation(formPopup);
+    setEventListenersForm(formPopup);
+    //setEventListenersValidation(formPopup, configForm); в требованиях нужно в отдельную функцию. А счастье было так возможно...
   });
+
+  document.addEventListener('keydown', (evt) => {
+    if (evt.key != 'Escape') return;
+    const divPopupElem = document.querySelector(".popup_opened");
+    closePopup(evt, divPopupElem);
+  }
+  );
 }
 
 renderCards(initialCards);
 initializeForms();
-
-document.addEventListener('keydown', (evt) => {
-  if (evt.key != 'Escape') return;
-  const divPopupElem = document.querySelector(".popup_opened");
-  closePopup(evt, divPopupElem);
-}
-);
+enableValidation(configForm);
