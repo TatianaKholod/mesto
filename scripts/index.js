@@ -1,5 +1,5 @@
-import { initialCards } from './cards.js'
-import { configForm } from './constans/index_const.js'
+import { initialCards } from './cards.js';
+import { configForm } from './constans/index_const.js';
 
 //данные попап с картинкой
 const divPopupImage = document.querySelector('.popup_form_image');
@@ -13,7 +13,7 @@ const cardTemplate = document.querySelector('#card-template').content;
 const handleKeydown = (evt) => {
   if (evt.key != 'Escape') return;
   const divPopupElem = document.querySelector(".popup_opened");
-  closePopup(evt, divPopupElem);
+  closePopup(divPopupElem);
 }
 
 function displayPopup(divPopup) {
@@ -21,40 +21,25 @@ function displayPopup(divPopup) {
   document.addEventListener('keydown', handleKeydown);
 }
 
-function closePopup(evt, divPopup, buttonCloseElem = '') {
-  if ((evt.type != 'submit')
-    && (evt.type != 'keydown')
-    && (buttonCloseElem != evt.target)
-    && (evt.currentTarget != evt.target))
-    return;
+function closePopup(divPopup) {
   divPopup.classList.remove('popup_opened');
-  //очистим сообщения валидации и погасим кнопку
-  divPopup.querySelectorAll(".popup__input").forEach((inputElementPopup) => {
-    hideInputError(inputElementPopup.closest('.popup__form'), inputElementPopup, configForm.inputErrorClass)
-  });
-  if (evt.type === 'submit') inactiveBtnSubmit(evt.submitter, configForm.inactiveButtonClass);
-
   document.removeEventListener('keydown', handleKeydown);
 }
 
 function handleFormSubmitProfile(evt, { nameElement, jobElement }) {
   const formPopup = evt.target;
-  formPopup['save-button'].setAttribute('disabled', 'disabled');
   evt.preventDefault();
   nameElement.textContent = formPopup['name'].value;
   jobElement.textContent = formPopup['job'].value;
-  closePopup(evt, formPopup.closest('.popup'));
+  closePopup(formPopup.closest('.popup'));
 }
 
 function setInputProfile(formPopupProfile, { nameElement, jobElement }) {
   const nameInputElem = formPopupProfile["name"];
   const jobInputElem = formPopupProfile["job"];
-  const saveBtnElem = formPopupProfile["save-button"];
 
   nameInputElem.value = nameElement.textContent;
   jobInputElem.value = jobElement.textContent;
-
-  toggleButtonState([nameInputElem, jobInputElem], saveBtnElem, configForm.inactiveButtonClass);
 }
 
 function creatCard(cardObj) {
@@ -67,7 +52,7 @@ function creatCard(cardObj) {
 
   newCard.querySelector('.gallery__like-toggle').addEventListener('click', (evt) => evt.target.classList.toggle('gallery__like-toggle_on'));
   newCard.querySelector('.gallery__card-delete').addEventListener('click', (evt) => evt.target.closest('.gallery__card').remove());
-  newCard.querySelector('.gallery__card-image').addEventListener('click', (evt) => {
+  cardImage.addEventListener('click', (evt) => {
     popupImage.src = evt.target.src;
     popupImage.alt = evt.target.alt;
     popupImgCaption.textContent = evt.target.alt;
@@ -91,12 +76,11 @@ function handleFormSubmitAddCard(evt) {
   };
   evt.preventDefault();
   renderCards([cardObj]);
-  closePopup(evt, formPopup.closest('.popup'));
+  closePopup(formPopup.closest('.popup'));
   formPopup.reset();
 }
 
 const setEventListenersPopup = (divPopup) => {
-  //console.dir(divPopup.className.includes('popup_form_editProfile'));
   const formPopup = divPopup.querySelector(configForm.formSelector);
 
   switch (true) {
@@ -110,6 +94,9 @@ const setEventListenersPopup = (divPopup) => {
       //слушатель на кнопку, вызывающую форму изменения профиля
       profileContainer.querySelector('.profile__edit-button').addEventListener('click', (evt) => {
         setInputProfile(formPopup, dataProfile);
+        divPopup.querySelectorAll(".popup__input").forEach((inputElementPopup) => {
+          hideInputError(formPopup, inputElementPopup, configForm.inputErrorClass)
+        });
         displayPopup(divPopup);
       });
       //слушатель на submit формы
@@ -124,8 +111,10 @@ const setEventListenersPopup = (divPopup) => {
       break;
   };
   //слушатель для закрытия попапов
-  const buttonCloseElem = divPopup.querySelector('.popup__button-close');
-  divPopup.addEventListener('click', (evt) => closePopup(evt, divPopup, buttonCloseElem));
+  divPopup.addEventListener('mousedown', (evt) => {
+    if (evt.target.classList.contains('popup_opened')) closePopup(divPopup);
+    if (evt.target.classList.contains('popup__button-close')) closePopup(divPopup);
+  });
 }
 
 const initializeForms = () => {

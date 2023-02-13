@@ -43,7 +43,16 @@ const toggleButtonState = (inputListPopup, buttonSubmitElem, inactiveButtonClass
 const setEventListenersValidation = (formPopup, configForm) => {
   const inputListPopup = Array.from(formPopup.querySelectorAll(configForm.inputSelector));
   const buttonSubmitElem = formPopup.querySelector(configForm.submitButtonSelector);
+  // деактивируем кнопку при 1й загрузке сайта
   toggleButtonState(inputListPopup, buttonSubmitElem, configForm.inactiveButtonClass);
+
+  formPopup.addEventListener('reset', () => {
+    // `setTimeout` нужен для того, чтобы дождаться очищения формы (вызов уйдет в конце стэка) и только потом вызвать `toggleButtonState`
+    setTimeout(() => {
+      toggleButtonState(inputListPopup, buttonSubmitElem, configForm.inactiveButtonClass);
+    }, 0); // достаточно указать 0 миллисекунд, чтобы после `reset` уже сработало действие
+  });
+
   inputListPopup.forEach((inputElemPopup) => {
     inputElemPopup.addEventListener('input', function () {
       checkInputValidity(formPopup, inputElemPopup, configForm.inputErrorClass);
