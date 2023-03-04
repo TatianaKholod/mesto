@@ -1,5 +1,3 @@
-import { displayPopup } from './index.js';
-
 //массив карточек для отображения
 export const initialCards = [
   {
@@ -35,10 +33,11 @@ const popupImgCaption = divPopupImage.querySelector('.popup__image-caption');
 
 
 export class Card {
-  constructor(data, templateSelector) {
+  constructor({ cardObj:data, displayPopup }, templateSelector) {
     this._link = data.link;
     this._name = data.name;
     this._templateSelector = templateSelector;
+    this._displayPopup = displayPopup;
   }
 
   _getTemplate() {
@@ -55,15 +54,15 @@ export class Card {
     evt.target.classList.toggle('gallery__like-toggle_on');
   }
 
-  _handleDeleteCard(evt) {
-    evt.target.closest('.gallery__card').remove();
+  _handleDeleteCard() {
+    this._element.remove();
   }
 
-  _handleOpenPopup(evt) {
-    popupImage.src = evt.target.src;
-    popupImage.alt = evt.target.alt;
-    popupImgCaption.textContent = evt.target.alt;
-    displayPopup(divPopupImage);
+  _handleOpenPopup() {
+    popupImage.src = this._link;
+    popupImage.alt = this._name;
+    popupImgCaption.textContent = this._name;
+    this._displayPopup(divPopupImage);
   }
 
   _setEventListeners() {
@@ -71,12 +70,12 @@ export class Card {
       this._handleToggleLike(evt);
     });
 
-    this._element.querySelector('.gallery__card-delete').addEventListener('click', (evt) => {
-      this._handleDeleteCard(evt);
+    this._element.querySelector('.gallery__card-delete').addEventListener('click', () => {
+      this._handleDeleteCard();
     });
 
-    this._cardImage.addEventListener('click', (evt) => {
-      this._handleOpenPopup(evt);
+    this._cardImage.addEventListener('click', () => {
+      this._handleOpenPopup();
     });
   }
 
@@ -93,5 +92,4 @@ export class Card {
 
     return this._element;
   }
-
 }
