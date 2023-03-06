@@ -2,6 +2,11 @@ import { initialCards, configForm } from './constans/index_const.js';
 import Card from './Card.js';
 import FormValidator from './Validate.js';
 
+//данные попап с картинкой
+export const divPopupImage = document.querySelector('.popup_form_image');
+export const popupImage = divPopupImage.querySelector('.popup__image');
+export const popupImgCaption = divPopupImage.querySelector('.popup__image-caption');
+
 //данные галереи
 const galleryList = document.querySelector('.gallery__card-list');
 
@@ -57,14 +62,13 @@ function handleFormSubmitAddCard(evt) {
   formPopup.reset();
 }
 
-const setValidatorForm = (formPopup) =>{
+const setValidatorForm = (formPopup) => {
   const formValidator = new FormValidator(configForm, formPopup);
   formValidator.enableValidation();
   return formValidator;
 }
 
-const handleFormEditProfile = (profilePopup, formPopup, dataProfile) => {
-  const formValidator = setValidatorForm(profilePopup);
+const handleFormEditProfile = (profilePopup, formPopup, dataProfile, formValidator) => {
   setInputProfile(formPopup, dataProfile);
   profilePopup.querySelectorAll(configForm.inputSelector).forEach((inputElementPopup) => {
     formValidator.hideInputError(inputElementPopup);
@@ -74,6 +78,8 @@ const handleFormEditProfile = (profilePopup, formPopup, dataProfile) => {
 
 const setListenersEditProfile = (profilePopup) => {
   const formPopup = profilePopup.querySelector(configForm.formSelector);
+  const formValidator = setValidatorForm(profilePopup);
+
   //данные профиля
   const profileContainer = document.querySelector('.profile__info-container');
   const dataProfile = {
@@ -83,8 +89,8 @@ const setListenersEditProfile = (profilePopup) => {
 
   //слушатель на кнопку, вызывающую форму изменения профиля
   profileContainer.querySelector('.profile__edit-button').addEventListener('click',
-  () => handleFormEditProfile(profilePopup, formPopup, dataProfile)
-   );
+    () => handleFormEditProfile(profilePopup, formPopup, dataProfile, formValidator)
+  );
   //слушатель на submit формы
   formPopup.addEventListener('submit', (evt) => handleFormSubmitProfile(evt, dataProfile));
 }

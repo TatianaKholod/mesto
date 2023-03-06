@@ -1,9 +1,4 @@
-//данные попап с картинкой
-const divPopupImage = document.querySelector('.popup_form_image');
-const popupImage = divPopupImage.querySelector('.popup__image');
-const popupImgCaption = divPopupImage.querySelector('.popup__image-caption');
-
-
+import { divPopupImage, popupImage, popupImgCaption } from './index.js';
 export default class Card {
   constructor({ cardObj: data, displayPopup }, templateSelector) {
     this._link = data.link;
