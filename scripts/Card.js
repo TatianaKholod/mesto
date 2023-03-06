@@ -1,39 +1,11 @@
-//массив карточек для отображения
-export const initialCards = [
-  {
-    name: 'Санкт-Петербург',
-    link: './images/Kazanskiy.jpg'
-  },
-  {
-    name: 'Петергоф',
-    link: './images/Petergof.jpg'
-  },
-  {
-    name: 'Пушкин',
-    link: './images/Pushkin.jpg'
-  },
-  {
-    name: 'Ломоносов',
-    link: './images/Oranienbaum.jpg'
-  },
-  {
-    name: 'Выборг',
-    link: './images/Viborg.jpg'
-  },
-  {
-    name: 'Карелия',
-    link: './images/Ruskeala.jpg'
-  }
-];
-
 //данные попап с картинкой
 const divPopupImage = document.querySelector('.popup_form_image');
 const popupImage = divPopupImage.querySelector('.popup__image');
 const popupImgCaption = divPopupImage.querySelector('.popup__image-caption');
 
 
-export class Card {
-  constructor({ cardObj:data, displayPopup }, templateSelector) {
+export default class Card {
+  constructor({ cardObj: data, displayPopup }, templateSelector) {
     this._link = data.link;
     this._name = data.name;
     this._templateSelector = templateSelector;

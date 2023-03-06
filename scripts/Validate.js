@@ -24,45 +24,45 @@ export default class FormValidator {
     }
   }
 
-  _hasInvalidInput = (inputListPopup) => {
-    return inputListPopup.some((inputElement) => {
+  _hasInvalidInput = () => {
+    return this._inputList.some((inputElement) => {
       return !inputElement.validity.valid;
     })
   }
 
-  _activeBtnSubmit = (buttonSubmitElem, inactiveButtonClass) => {
-    buttonSubmitElem.classList.remove(inactiveButtonClass);
-    buttonSubmitElem.removeAttribute('disabled');
+  _activeBtnSubmit = () => {
+    this._buttonSubmitElem.classList.remove(this._selectors.inactiveButtonClass);
+    this._buttonSubmitElem.removeAttribute('disabled');
   }
-  _inactiveBtnSubmit = (buttonSubmitElem, inactiveButtonClass) => {
-    buttonSubmitElem.classList.add(inactiveButtonClass);
-    buttonSubmitElem.setAttribute('disabled', 'disabled');
+  _inactiveBtnSubmit = () => {
+    this._buttonSubmitElem.classList.add(this._selectors.inactiveButtonClass);
+    this._buttonSubmitElem.setAttribute('disabled', 'disabled');
   }
 
-  _toggleButtonState = (inputListPopup, buttonSubmitElem) => {
-    if (this._hasInvalidInput(inputListPopup))
-      this._inactiveBtnSubmit(buttonSubmitElem, this._selectors.inactiveButtonClass)
+  _toggleButtonState = () => {
+    if (this._hasInvalidInput(this._inputList))
+      this._inactiveBtnSubmit()
     else
-      this._activeBtnSubmit(buttonSubmitElem, this._selectors.inactiveButtonClass);
+      this._activeBtnSubmit();
   }
 
   _setEventListenersValidation = () => {
-    const inputListPopup = Array.from(this._formElement.querySelectorAll(this._selectors.inputSelector));
-    const buttonSubmitElem = this._formElement.querySelector(this._selectors.submitButtonSelector);
+    this._inputList = Array.from(this._formElement.querySelectorAll(this._selectors.inputSelector));
+    this._buttonSubmitElem = this._formElement.querySelector(this._selectors.submitButtonSelector);
     // деактивируем кнопку при 1й загрузке сайта
-    this._toggleButtonState(inputListPopup, buttonSubmitElem);
+    this._toggleButtonState();
 
     this._formElement.addEventListener('reset', () => {
       // `setTimeout` нужен для того, чтобы дождаться очищения формы (вызов уйдет в конце стэка) и только потом вызвать `toggleButtonState`
       setTimeout(() => {
-        this._toggleButtonState(inputListPopup, buttonSubmitElem);
+        this._toggleButtonState();
       }, 0); // достаточно указать 0 миллисекунд, чтобы после `reset` уже сработало действие
     });
 
-    inputListPopup.forEach((inputElemPopup) => {
+    this._inputList.forEach((inputElemPopup) => {
       inputElemPopup.addEventListener('input', () => {
         this._checkInputValidity(inputElemPopup);
-        this._toggleButtonState(inputListPopup, buttonSubmitElem);
+        this._toggleButtonState();
       });
     });
   }

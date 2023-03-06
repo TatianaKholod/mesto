@@ -1,5 +1,5 @@
-import { initialCards, Card } from './Card.js';
-import { configForm } from './constans/index_const.js';
+import { initialCards, configForm } from './constans/index_const.js';
+import Card from './Card.js';
 import FormValidator from './Validate.js';
 
 //данные галереи
@@ -39,7 +39,7 @@ function setInputProfile(formPopupProfile, { nameElement, jobElement }) {
 
 function renderCards(arrObjCards) {
   const arrayCards = arrObjCards.map((cardObj) => {
-    const card = new Card(({cardObj, displayPopup}), '#card-template');
+    const card = new Card(({ cardObj, displayPopup }), '#card-template');
     return card.generateCard();
   });
   galleryList.prepend(...arrayCards); //Добавить массив один раз более экономно по ресурсам, чем каждую карточку отдельно
@@ -57,7 +57,23 @@ function handleFormSubmitAddCard(evt) {
   formPopup.reset();
 }
 
-const setListenersEditProfile = (divPopup, formPopup, formValidator) => {
+const setValidatorForm = (formPopup) =>{
+  const formValidator = new FormValidator(configForm, formPopup);
+  formValidator.enableValidation();
+  return formValidator;
+}
+
+const handleFormEditProfile = (profilePopup, formPopup, dataProfile) => {
+  const formValidator = setValidatorForm(profilePopup);
+  setInputProfile(formPopup, dataProfile);
+  profilePopup.querySelectorAll(configForm.inputSelector).forEach((inputElementPopup) => {
+    formValidator.hideInputError(inputElementPopup);
+  });
+  displayPopup(profilePopup);
+}
+
+const setListenersEditProfile = (profilePopup) => {
+  const formPopup = profilePopup.querySelector(configForm.formSelector);
   //данные профиля
   const profileContainer = document.querySelector('.profile__info-container');
   const dataProfile = {
@@ -66,20 +82,18 @@ const setListenersEditProfile = (divPopup, formPopup, formValidator) => {
   };
 
   //слушатель на кнопку, вызывающую форму изменения профиля
-  profileContainer.querySelector('.profile__edit-button').addEventListener('click', () => {
-    setInputProfile(formPopup, dataProfile);
-    divPopup.querySelectorAll(configForm.inputSelector).forEach((inputElementPopup) => {
-      formValidator.hideInputError(inputElementPopup);
-    });
-    displayPopup(divPopup);
-  });
+  profileContainer.querySelector('.profile__edit-button').addEventListener('click',
+  () => handleFormEditProfile(profilePopup, formPopup, dataProfile)
+   );
   //слушатель на submit формы
   formPopup.addEventListener('submit', (evt) => handleFormSubmitProfile(evt, dataProfile));
 }
 
-const setListenerAddCard = (divPopup, formPopup) => {
+const setListenerAddCard = (addCardPopup) => {
+  const formPopup = addCardPopup.querySelector(configForm.formSelector);
+  setValidatorForm(formPopup);
   //слушатель на кнопку, вызывающую форму добавления карточки
-  document.querySelector('.profile__add-button').addEventListener('click', () => displayPopup(divPopup));
+  document.querySelector('.profile__add-button').addEventListener('click', () => displayPopup(addCardPopup));
   //слушатель на submit формы
   formPopup.addEventListener('submit', handleFormSubmitAddCard);
 }
@@ -93,21 +107,16 @@ const setListenerClosePopup = (divPopup) => {
 }
 
 const initializePopups = () => {
-  const popupList = document.querySelectorAll('.popup');
-  popupList.forEach((divPopup) => {
-    if (!divPopup.className.includes('popup_form_image')) {
-      const formPopup = divPopup.querySelector(configForm.formSelector);
-      //валидация форм
-      const formValidator = new FormValidator(configForm, formPopup);
-      formValidator.enableValidation();
-      if (divPopup.className.includes('popup_form_addCard'))
-        setListenerAddCard(divPopup, formPopup);
 
-      if (divPopup.className.includes('popup_form_editProfile'))
-        setListenersEditProfile(divPopup, formPopup, formValidator);
-    };
-    setListenerClosePopup(divPopup);
-  });
+  const profilePopup = document.querySelector('.popup_form_editProfile');
+  setListenersEditProfile(profilePopup);
+  setListenerClosePopup(profilePopup);
+
+  const addCardPopup = document.querySelector('.popup_form_addCard');
+  setListenerAddCard(addCardPopup);
+  setListenerClosePopup(addCardPopup);
+
+  setListenerClosePopup(document.querySelector('.popup_form_image'));
 }
 
 renderCards(initialCards);
