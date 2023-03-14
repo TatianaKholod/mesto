@@ -1,10 +1,9 @@
-import { divPopupImage, popupImage, popupImgCaption } from './index.js';
 export default class Card {
-  constructor({ cardObj: data, displayPopup }, templateSelector) {
+  constructor({ cardObj: data, displayImagePopup }, templateSelector) {
     this._link = data.link;
     this._name = data.name;
     this._templateSelector = templateSelector;
-    this._displayPopup = displayPopup;
+    this._displayImagePopup = displayImagePopup;
   }
 
   _getTemplate() {
@@ -26,10 +25,7 @@ export default class Card {
   }
 
   _handleOpenPopup() {
-    popupImage.src = this._link;
-    popupImage.alt = this._name;
-    popupImgCaption.textContent = this._name;
-    this._displayPopup(divPopupImage);
+    this._displayImagePopup(({ name: this._name, link: this._link }));
   }
 
   _setEventListeners() {

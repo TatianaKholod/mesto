@@ -1,14 +1,13 @@
 import { initialCards, configForm } from './constans/index_const.js';
 import Card from './Card.js';
 import FormValidator from './Validate.js';
+import Section from './Section.js';
 
 //данные попап с картинкой
 export const divPopupImage = document.querySelector('.popup_form_image');
 export const popupImage = divPopupImage.querySelector('.popup__image');
 export const popupImgCaption = divPopupImage.querySelector('.popup__image-caption');
 
-//данные галереи
-const galleryList = document.querySelector('.gallery__card-list');
 
 const handleKeydown = (evt) => {
   if (evt.key != 'Escape') return;
@@ -19,6 +18,13 @@ const handleKeydown = (evt) => {
 function displayPopup(divPopup) {
   divPopup.classList.add('popup_opened');
   document.addEventListener('keydown', handleKeydown);
+}
+
+function displayImagePopup(data) {
+  popupImage.src = data.link;
+  popupImage.alt = data.name;
+  popupImgCaption.textContent = data.name;
+  displayPopup(divPopupImage);
 }
 
 function closePopup(divPopup) {
@@ -42,13 +48,19 @@ function setInputProfile(formPopupProfile, { nameElement, jobElement }) {
   jobInputElem.value = jobElement.textContent;
 }
 
-function renderCards(arrObjCards) {
-  const arrayCards = arrObjCards.map((cardObj) => {
-    const card = new Card(({ cardObj, displayPopup }), '#card-template');
-    return card.generateCard();
-  });
-  galleryList.prepend(...arrayCards); //Добавить массив один раз более экономно по ресурсам, чем каждую карточку отдельно
+const createCards = (cardObj) => {
+  const card = new Card(({ cardObj, displayImagePopup }), '#card-template');
+  const cardElement = card.generateCard();
+  return cardElement;
 }
+//данные галереи
+const galleryList = new Section({
+  items: initialCards,
+  renderer: createCards
+},
+  '.gallery__card-list'
+);
+
 
 function handleFormSubmitAddCard(evt) {
   const formPopup = evt.target;
@@ -57,7 +69,7 @@ function handleFormSubmitAddCard(evt) {
     link: formPopup['src-card'].value
   };
   evt.preventDefault();
-  renderCards([cardObj]);
+  galleryList.addItem(createCards(cardObj));
   closePopup(formPopup.closest('.popup'));
   formPopup.reset();
 }
@@ -124,6 +136,5 @@ const initializePopups = () => {
 
   setListenerClosePopup(document.querySelector('.popup_form_image'));
 }
-
-renderCards(initialCards);
+galleryList.renderItems();
 initializePopups();
