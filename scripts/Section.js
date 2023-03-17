@@ -12,6 +12,6 @@ export default class Section {
 
   renderItems() {
     const arrayCards = this._renderedItems.map((item) => {return this._renderer(item)});
-    this._container.prepend(...arrayCards);
+    this._container.prepend(...arrayCards); //Добавить массив один раз более экономно по ресурсам, чем каждую карточку отдельно
   }
 }
