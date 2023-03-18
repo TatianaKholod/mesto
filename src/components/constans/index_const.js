@@ -6,29 +6,36 @@ export const configForm = {
   inputErrorClass: 'popup__input_type_error',
 };
 //массив карточек для отображения
+import Kazanskiy from '../../images/Kazanskiy.jpg';
+import Petergof from '../../images/Petergof.jpg';
+import Pushkin from '../../images/Pushkin.jpg';
+import Oranienbaum from '../../images/Oranienbaum.jpg';
+import Viborg from '../../images/Viborg.jpg';
+import Ruskeala from '../../images/Ruskeala.jpg';
+
 export const initialCards = [
   {
     name: 'Санкт-Петербург',
-    link: './images/Kazanskiy.jpg'
+    link: Kazanskiy
   },
   {
     name: 'Петергоф',
-    link: './images/Petergof.jpg'
+    link: Petergof
   },
   {
     name: 'Пушкин',
-    link: './images/Pushkin.jpg'
+    link: Pushkin
   },
   {
     name: 'Ломоносов',
-    link: './images/Oranienbaum.jpg'
+    link: Oranienbaum
   },
   {
     name: 'Выборг',
-    link: './images/Viborg.jpg'
+    link: Viborg
   },
   {
     name: 'Карелия',
-    link: './images/Ruskeala.jpg'
+    link: Ruskeala
   }
 ];
