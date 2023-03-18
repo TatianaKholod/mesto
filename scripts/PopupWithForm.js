@@ -3,42 +3,40 @@ import FormValidator from './Validate.js';
 import { configForm } from './constans/index_const.js';
 
 export default class PopupWithForm extends Popup {
-  constructor(dataInput, handleFormSubmit, selector) {
+  constructor(handleFormSubmit, selector) {
     super(selector);
     this._handleFormSubmit = handleFormSubmit;
-    this._dataInput = dataInput;
   }
 
-_setValidatorForm() {
-    const formValidator = new FormValidator(configForm, this._form);
+  _setValidatorForm() {
+    const formValidator = new FormValidator(configForm, this._formElement);
     formValidator.enableValidation();
     return formValidator;
   }
 
-  _getInputValues(){
+  _getInputValues() {
     const data = {};
-      for (let key in this._dataInput){
-        data[key] = this._form[key].value;
-      };
+    this._formElement.querySelectorAll(configForm.inputSelector).forEach((inputElement) => { data[inputElement.name] = inputElement.value });
     return data;
   }
 
-  setInputValues(){
-    for (let key in this._dataInput){
-       this._form[key].value = this._dataInput[key];
-       this._formValidatorForm.hideInputError(this._form[key]);
+  open(dataInput) {
+    for (let key in dataInput) {
+      this._formElement[key].value = dataInput[key];
+      this._formValidatorForm.hideInputError(this._formElement[key]);
     };
+    super.open();
   }
 
   setEventListeners() {
-    this._form = this._popup.querySelector('.popup__form');
-    this._form.addEventListener('submit', (evt) => {this._handleFormSubmit(evt,this._getInputValues())});
+    this._formElement = this._popup.querySelector('.popup__form');
+    this._formElement.addEventListener('submit', (evt) => { this._handleFormSubmit(evt, this._getInputValues()) });
     super.setListenerClosePopup();
     this._formValidatorForm = this._setValidatorForm();
   }
 
-  close(){
+  closeSubmit() {
     super.close();
-    this._form.reset();
+    this._formElement.reset();
   }
 }

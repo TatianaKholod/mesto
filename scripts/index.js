@@ -3,6 +3,7 @@ import Card from './Card.js';
 import Section from './Section.js';
 import PopupWithImage from './PopupWithImage.js';
 import PopupWithForm from './PopupWithForm.js';
+import UserInfo from './UserInfo.js';
 
 const popupWithImage = new PopupWithImage('.popup_form_image');
 popupWithImage.setListenerClosePopup();
@@ -12,43 +13,35 @@ const createCards = (cardObj) => {
   const cardElement = card.generateCard();
   return cardElement;
 }
-//данные галереи
-const galleryList = new Section({
-  items: initialCards,
-  renderer: createCards
-},
-  '.gallery__card-list'
-);
 
-function handleFormSubmitAddCard(evt,cardObj) {
+const galleryList = new Section({ items: initialCards, renderer: createCards }, '.gallery__card-list');
+
+function handleFormSubmitAddCard(evt, cardObj) {
   evt.preventDefault();
-  galleryList.addItem(createCards({name:cardObj['name-card'],link:cardObj['src-card']}));
-  popupCardAdd.close();
+  galleryList.addItem(createCards({ name: cardObj['name-card'], link: cardObj['src-card'] }));
+  popupCardAdd.closeSubmit();
 }
 
-const popupCardAdd = new PopupWithForm(({'name-card':'','src-card':''}), handleFormSubmitAddCard , '.popup_form_addCard');
+const popupCardAdd = new PopupWithForm(handleFormSubmitAddCard, '.popup_form_addCard');
 popupCardAdd.setEventListeners();
 //слушатель на кнопку, вызывающую форму добавления карточки
 document.querySelector('.profile__add-button').addEventListener('click', () => popupCardAdd.open());
 
-const profileContainer = document.querySelector('.profile__info-container');
-
-const dataProfile = {
-  nameElement: profileContainer.querySelector('.profile__name'),
-  jobElement: profileContainer.querySelector('.profile__job')
-};
-const popupEditProfile = new PopupWithForm(({'name': dataProfile.nameElement.textContent,'job': dataProfile.jobElement.textContent}), handleFormSubmitProfile, '.popup_form_editProfile');
+const popupEditProfile = new PopupWithForm(handleFormSubmitProfile, '.popup_form_editProfile');
 popupEditProfile.setEventListeners();
+
+const userInfo = new UserInfo('.profile__name', '.profile__job');
 
 function handleFormSubmitProfile(evt, { name, job }) {
   evt.preventDefault();
-  dataProfile.nameElement.textContent = name;
-  dataProfile.jobElement.textContent = job;
-  popupEditProfile.close();
+  userInfo.setUserInfo(name, job);
+  popupEditProfile.closeSubmit();
 }
 
 //слушатель на кнопку, вызывающую форму изменения профиля
-profileContainer.querySelector('.profile__edit-button').addEventListener('click', () => {popupEditProfile.setInputValues();popupEditProfile.open()});
+document.querySelector('.profile__edit-button').addEventListener('click', () => {
+  popupEditProfile.open(userInfo.getUserInfo())
+});
 
 galleryList.renderItems();
 
