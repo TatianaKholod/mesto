@@ -1,10 +1,12 @@
 import './index.css';
-import { initialCards } from '../components/constans/index_const.js';
+import { initialCards, configForm } from '../components/constans/index_const.js';
 import Card from '../components/Card.js';
 import Section from '../components/Section.js';
 import PopupWithImage from '../components/PopupWithImage.js';
 import PopupWithForm from '../components/PopupWithForm.js';
 import UserInfo from '../components/UserInfo.js';
+import FormValidator from '../components/Validate.js';
+
 
 const popupWithImage = new PopupWithImage('.popup_form_image');
 popupWithImage.setListenerClosePopup();
@@ -27,6 +29,9 @@ const popupCardAdd = new PopupWithForm(handleFormSubmitAddCard, '.popup_form_add
 popupCardAdd.setEventListeners();
 //слушатель на кнопку, вызывающую форму добавления карточки
 document.querySelector('.profile__add-button').addEventListener('click', () => popupCardAdd.open());
+//валидация
+const formValidatorCard = new FormValidator(configForm, popupCardAdd.getFormElement());
+formValidatorCard.enableValidation();
 
 const popupEditProfile = new PopupWithForm(handleFormSubmitProfile, '.popup_form_editProfile');
 popupEditProfile.setEventListeners();
@@ -36,12 +41,17 @@ const userInfo = new UserInfo('.profile__name', '.profile__job');
 function handleFormSubmitProfile(evt, { name, job }) {
   evt.preventDefault();
   userInfo.setUserInfo(name, job);
-  popupEditProfile.closeSubmit();
+  popupEditProfile.close();
 }
+
+//валидация профиля
+const formValidatorProfile = new FormValidator(configForm, popupEditProfile.getFormElement());
+formValidatorProfile.enableValidation();
 
 //слушатель на кнопку, вызывающую форму изменения профиля
 document.querySelector('.profile__edit-button').addEventListener('click', () => {
-  popupEditProfile.open(userInfo.getUserInfo())
+  popupEditProfile.setInputValues(userInfo.getUserInfo(), formValidatorProfile.hideInputError);
+  popupEditProfile.open();
 });
 
 galleryList.renderItems();
