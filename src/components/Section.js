@@ -1,6 +1,5 @@
 export default class Section {
-  constructor({ items, renderer }, containerSelector) {
-    this._renderedItems = items;
+  constructor(renderer, containerSelector) {
     this._renderer = renderer;
 
     this._container = document.querySelector(containerSelector);
@@ -10,8 +9,8 @@ export default class Section {
     this._container.prepend(element);
   }
 
-  renderItems() {
-    const arrayCards = this._renderedItems.map((item) => {return this._renderer(item)});
+  renderItems(renderedItems) {
+    const arrayCards = renderedItems.map((item) => { return this._renderer(item) });
     this._container.prepend(...arrayCards); //Добавить массив один раз более экономно по ресурсам, чем каждую карточку отдельно
   }
 }

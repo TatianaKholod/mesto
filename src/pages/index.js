@@ -1,5 +1,5 @@
 import './index.css';
-import { initialCards, configForm } from '../components/constans/index_const.js';
+import { configForm } from '../components/constans/index_const.js';
 import Api from '../components/Api.js';
 import Card from '../components/Card.js';
 import Section from '../components/Section.js';
@@ -25,7 +25,12 @@ const createCards = (cardObj) => {
   return cardElement;
 }
 
-const galleryList = new Section({ items: initialCards, renderer: createCards }, '.gallery__card-list');
+api.getInitialCards()
+  .then((data) => {
+    galleryList.renderItems(data);
+  });
+
+const galleryList = new Section(  createCards , '.gallery__card-list');
 
 function handleFormSubmitAddCard(evt, cardObj) {
   evt.preventDefault();
@@ -66,5 +71,4 @@ document.querySelector('.profile__edit-button').addEventListener('click', () => 
   popupEditProfile.open();
 });
 
-galleryList.renderItems();
 
