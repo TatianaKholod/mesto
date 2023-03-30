@@ -57,7 +57,10 @@ api.getInitProfile()
 
 function handleFormSubmitProfile(evt, { name, job }) {
   evt.preventDefault();
-  userInfo.setUserInfo(name, job);
+  api.updateProfile(name, job)
+  .then(data =>
+    userInfo.setUserInfo(data.name, data.about)
+  );
   popupEditProfile.close();
 }
 

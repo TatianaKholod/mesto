@@ -8,16 +8,13 @@ export default class Api {
     return fetch(this.baseUrl + '/cards', {
       headers: this.headers
     })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`)
-    })
-    .then((res) => {
-      return res;
-    })
-    .catch((err) => {
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`)
+      })
+      .catch((err) => {
         console.log('Запрос не выполнен - ' + err);
       });
   }
@@ -32,8 +29,24 @@ export default class Api {
         }
         return Promise.reject(`Ошибка: ${res.status}`)
       })
-      .then((res) => {
-        return res;
+      .catch((err) => {
+        console.log('Запрос не выполнен - ' + err);
+      });
+  }
+
+  updateProfile(name, job) {
+    return fetch(this.baseUrl + '/users/me', {
+      method: 'PATCH',
+      headers: this.headers,
+      body: JSON.stringify({
+        name: name,
+        about: job
+      })
+    })
+      .then(res => {
+        if (res.ok)
+          return res.json();
+        return Promise.reject(`Ошибка: ${res.status}`);
       })
       .catch((err) => {
         console.log('Запрос не выполнен - ' + err);
