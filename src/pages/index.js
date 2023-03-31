@@ -22,19 +22,23 @@ popupWithImage.setListenerClosePopup();
 const createCards = (cardObj) => {
   const card = new Card(({ cardObj, handleCardClick: (data) => { popupWithImage.open(data) } }), '#card-template');
   const cardElement = card.generateCard();
+  //console.log(card.cardId + "- "+ card._name);//удалить
   return cardElement;
 }
 
 api.getInitialCards()
-  .then((data) => {
-    galleryList.renderItems(data);
+  .then((dataCards) => {
+    galleryList.renderItems(dataCards);
   });
 
 const galleryList = new Section(  createCards , '.gallery__card-list');
 
 function handleFormSubmitAddCard(evt, cardObj) {
   evt.preventDefault();
-  galleryList.addItem(createCards({ name: cardObj['name-card'], link: cardObj['src-card'] }));
+  api.createNewCard(cardObj['name-card'],cardObj['src-card'])
+  .then((dataCard) =>{
+    galleryList.addItem(createCards(dataCard));
+  });
   popupCardAdd.closeSubmit();
 }
 
@@ -74,4 +78,5 @@ document.querySelector('.profile__edit-button').addEventListener('click', () => 
   popupEditProfile.open();
 });
 
+//api.deleteCard('642719f377f24d3b98350d84'); //удалить
 
