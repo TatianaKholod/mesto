@@ -29,6 +29,9 @@ const createCards = (cardObj) => {
 api.getInitialCards()
   .then((dataCards) => {
     galleryList.renderItems(dataCards);
+  })
+  .catch((err) => {
+    console.log('Ошибка отображения карточек - ' + err.message);
   });
 
 const galleryList = new Section(  createCards , '.gallery__card-list');
@@ -38,6 +41,9 @@ function handleFormSubmitAddCard(evt, cardObj) {
   api.createNewCard(cardObj['name-card'],cardObj['src-card'])
   .then((dataCard) =>{
     galleryList.addItem(createCards(dataCard));
+  })
+  .catch((err) => {
+    console.log('Ошибка добавления карточки - ' + err.message);
   });
   popupCardAdd.closeSubmit();
 }
@@ -57,14 +63,21 @@ const userInfo = new UserInfo('.profile__name', '.profile__job');
 api.getInitProfile()
   .then(data =>
     userInfo.setUserInfo(data.name, data.about)
-  );
+  )
+  .catch((err) => {
+    console.log('Ошибка отображения профиля - ' + err.message);
+  });
+
 
 function handleFormSubmitProfile(evt, { name, job }) {
   evt.preventDefault();
   api.updateProfile(name, job)
   .then(data =>
     userInfo.setUserInfo(data.name, data.about)
-  );
+  )
+  .catch((err) => {
+    console.log('Ошибка ообновления профиля - ' + err.message);
+  });
   popupEditProfile.close();
 }
 
@@ -78,5 +91,5 @@ document.querySelector('.profile__edit-button').addEventListener('click', () => 
   popupEditProfile.open();
 });
 
-//api.deleteCard('642719f377f24d3b98350d84'); //удалить
+//api.deleteCard('6427fa82b6947e3ca0ae846a'); //удалить
 
