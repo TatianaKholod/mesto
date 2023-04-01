@@ -1,11 +1,12 @@
 export default class Card {
-  constructor({ cardObj: data, handleCardClick }, templateSelector) {
+  constructor({ cardObj: data, handleCardClick, handelDelIconClick }, templateSelector) {
     this._link = data.link;
     this._name = data.name;
     this.cardId = data._id;
     this._liksCount = data.likes.length;
     this._templateSelector = templateSelector;
     this._handleCardClick = handleCardClick;
+    this._handelDelIconClick = handelDelIconClick;
   }
 
   _getTemplate() {
@@ -22,7 +23,7 @@ export default class Card {
     evt.target.classList.toggle('gallery__like-toggle_on');
   }
 
-  _handleDeleteCard() {
+  DeleteCard() {
     this._element.remove();
   }
 
@@ -36,7 +37,7 @@ export default class Card {
     });
 
     this._element.querySelector('.gallery__card-delete').addEventListener('click', () => {
-      this._handleDeleteCard();
+      this._handelDelIconClick(this);
     });
 
     this._cardImage.addEventListener('click', () => {

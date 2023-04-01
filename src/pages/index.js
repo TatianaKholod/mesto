@@ -5,6 +5,7 @@ import Card from '../components/Card.js';
 import Section from '../components/Section.js';
 import PopupWithImage from '../components/PopupWithImage.js';
 import PopupWithForm from '../components/PopupWithForm.js';
+import PopupWithConfirmation from '../components/PopupWithConfirmation.js';
 import UserInfo from '../components/UserInfo.js';
 import FormValidator from '../components/Validate.js';
 
@@ -19,10 +20,28 @@ const api = new Api({
 const popupWithImage = new PopupWithImage('.popup_form_image');
 popupWithImage.setListenerClosePopup();
 
+const popupWithConfirmation = new PopupWithConfirmation('.popup_form_delCard');
+popupWithConfirmation.setEventListeners();
+
+const handelDelIconClick = (card) => {
+  popupWithConfirmation.open();
+  popupWithConfirmation.sethandleFormSubmit(
+    () =>
+      api.deleteCard(card.cardId)
+        .then((res) => { if (res) { popupWithConfirmation.close(); card.DeleteCard() } })
+        .catch((err) => {
+          console.log('Ошибка удаления карточки - ' + err.message)
+        })
+  )
+}
+
 const createCards = (cardObj) => {
-  const card = new Card(({ cardObj, handleCardClick: (data) => { popupWithImage.open(data) } }), '#card-template');
+  const card = new Card(({
+    cardObj,
+    handleCardClick: (data) => { popupWithImage.open(data) },
+    handelDelIconClick
+  }), '#card-template');
   const cardElement = card.generateCard();
-  //console.log(card.cardId + "- "+ card._name);//удалить
   return cardElement;
 }
 
@@ -34,17 +53,17 @@ api.getInitialCards()
     console.log('Ошибка отображения карточек - ' + err.message);
   });
 
-const galleryList = new Section(  createCards , '.gallery__card-list');
+const galleryList = new Section(createCards, '.gallery__card-list');
 
 function handleFormSubmitAddCard(evt, cardObj) {
   evt.preventDefault();
-  api.createNewCard(cardObj['name-card'],cardObj['src-card'])
-  .then((dataCard) =>{
-    galleryList.addItem(createCards(dataCard));
-  })
-  .catch((err) => {
-    console.log('Ошибка добавления карточки - ' + err.message);
-  });
+  api.createNewCard(cardObj['name-card'], cardObj['src-card'])
+    .then((dataCard) => {
+      galleryList.addItem(createCards(dataCard));
+    })
+    .catch((err) => {
+      console.log('Ошибка добавления карточки - ' + err.message);
+    });
   popupCardAdd.closeSubmit();
 }
 
@@ -72,12 +91,12 @@ api.getInitProfile()
 function handleFormSubmitProfile(evt, { name, job }) {
   evt.preventDefault();
   api.updateProfile(name, job)
-  .then(data =>
-    userInfo.setUserInfo(data.name, data.about)
-  )
-  .catch((err) => {
-    console.log('Ошибка ообновления профиля - ' + err.message);
-  });
+    .then(data =>
+      userInfo.setUserInfo(data.name, data.about)
+    )
+    .catch((err) => {
+      console.log('Ошибка ообновления профиля - ' + err.message);
+    });
   popupEditProfile.close();
 }
 
@@ -90,6 +109,4 @@ document.querySelector('.profile__edit-button').addEventListener('click', () => 
   popupEditProfile.setInputValues(userInfo.getUserInfo(), formValidatorProfile.hideInputError);
   popupEditProfile.open();
 });
-
-//api.deleteCard('6427fa82b6947e3ca0ae846a'); //удалить
 
