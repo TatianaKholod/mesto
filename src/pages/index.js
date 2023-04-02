@@ -27,7 +27,7 @@ const handelDelIconClick = (card) => {
   popupWithConfirmation.open();
   popupWithConfirmation.sethandleFormSubmit(
     () =>
-      api.deleteCard(card.getCardId())
+      api.deleteCard(card._cardId)
         .then((res) => { if (res) { popupWithConfirmation.close(); card.deleteCard() } })
         .catch((err) => {
           console.log('Ошибка удаления карточки - ' + err.message)
@@ -44,11 +44,35 @@ api.getInitProfile()
     console.log('Ошибка отображения профиля - ' + err.message);
   });
 
+const handleToggleLike = (card) => {
+  if (card.isLiked(userInfo.getUserId())) {
+    api.delLikeCard(card._cardId)
+      .then((res) => {
+        card.updateLikesArr(res.likes);
+        card.delLike();
+      })
+      .catch((err) => {
+        console.log('Ошибка удаления лайка - ' + err.message)
+      })
+  }
+  else {
+    api.setLikeCard(card._cardId)
+      .then((res) => {
+        card.updateLikesArr(res.likes);
+        card.addLike();
+      })
+      .catch((err) => {
+        console.log('Ошибка добавления лайка - ' + err.message)
+      })
+  }
+}
+
 const createCards = (cardObj) => {
   const card = new Card(({
     cardObj,
     handleCardClick: (data) => { popupWithImage.open(data) },
-    handelDelIconClick
+    handelDelIconClick,
+    handleToggleLike
   }), '#card-template');
   const cardElement = card.generateCard(userInfo.getUserId());
   return cardElement;

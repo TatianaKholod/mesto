@@ -70,17 +70,46 @@ export default class Api {
         console.log('Запрос не выполнен - ' + err.message);
       });
   }
-  deleteCard(cardId){
+  deleteCard(cardId) {
     return fetch(`${this.baseUrl}/cards/${cardId}`, {
       method: 'DELETE',
       headers: this.headers
     })
-    .then(res => {
-      if (res.ok)
-        return true;
-      return Promise.reject(`Ошибка: ${res.status}`);
+      .then(res => {
+        if (res.ok)
+          return true;
+        return Promise.reject(`Ошибка: ${res.status}`);
+      })
+      .catch((err) => {
+        console.log('Запрос не выполнен - ' + err.message);
+      });
+  }
+
+  setLikeCard(cardId) {
+    return fetch(`${this.baseUrl}/cards/likes/${cardId}`, {
+      method: 'PUT',
+      headers: this.headers
     })
-    .catch((err) => {
+      .then(res => {
+        if (res.ok)
+          return res.json();
+        return Promise.reject(`Ошибка: ${res.status}`);
+      })
+      .catch((err) => {
+        console.log('Запрос не выполнен - ' + err.message);
+      });
+  }
+  delLikeCard(cardId) {
+    return fetch(`${this.baseUrl}/cards/likes/${cardId}`, {
+      method: 'DELETE',
+      headers: this.headers
+    })
+      .then(res => {
+        if (res.ok)
+          return res.json();
+        return Promise.reject(`Ошибка: ${res.status}`);
+      })
+      .catch((err) => {
         console.log('Запрос не выполнен - ' + err.message);
       });
   }

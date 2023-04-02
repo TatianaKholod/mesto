@@ -1,13 +1,14 @@
 export default class Card {
-  constructor({ cardObj: data, handleCardClick, handelDelIconClick }, templateSelector) {
+  constructor({ cardObj: data, handleCardClick, handelDelIconClick, handleToggleLike }, templateSelector) {
     this._link = data.link;
     this._name = data.name;
     this._cardId = data._id;
-    this._liksCount = data.likes.length;
+    this._liksArr = data.likes;
     this._ownerId = data.owner._id;
     this._templateSelector = templateSelector;
     this._handleCardClick = handleCardClick;
     this._handelDelIconClick = handelDelIconClick;
+    this._handleToggleLike = handleToggleLike;
   }
 
   _getTemplate() {
@@ -20,15 +21,29 @@ export default class Card {
     return cardElement;
   }
 
-  _handleToggleLike(evt) {
-    evt.target.classList.toggle('gallery__like-toggle_on');
+  _updateLiksCount(liksCount) {
+    this._elementLikeCounter.textContent = (liksCount > 0) ? liksCount : '';
+  }
+
+  addLike() {
+    this._likeElement.classList.add('gallery__like-toggle_on');
+    this._updateLiksCount(this._liksArr.length);
+  }
+  delLike() {
+    this._likeElement.classList.remove('gallery__like-toggle_on');
+    this._updateLiksCount(this._liksArr.length);
+  }
+
+  isLiked(userId) {
+    return this._liksArr.some(i => { return i._id === userId })
+  }
+
+  updateLikesArr(newArr) {
+    this._liksArr = newArr;
   }
 
   deleteCard() {
     this._element.remove();
-  }
-  getCardId() {
-    return this._cardId;
   }
 
   _handleOpenPopup() {
@@ -36,8 +51,9 @@ export default class Card {
   }
 
   _setEventListeners() {
-    this._element.querySelector('.gallery__like-toggle').addEventListener('click', (evt) => {
-      this._handleToggleLike(evt);
+    this._likeElement = this._element.querySelector('.gallery__like-toggle');
+    this._likeElement.addEventListener('click', () => {
+      this._handleToggleLike(this);
     });
 
     this._cardImage.addEventListener('click', () => {
@@ -64,10 +80,16 @@ export default class Card {
 
     this._element.querySelector('.gallery__text-name').textContent = this._name;
 
-    this._element.querySelector('.gallery__like-counter').textContent = (this._liksCount > 0) ? this._liksCount : '';
+    this._elementLikeCounter = this._element.querySelector('.gallery__like-counter');
+    //this._updateLiksCount(this._liksArr.length);
 
     this._setEventListeners();
-
+    if (this.isLiked(userId)) {
+      this.addLike();
+    }
+    else {
+      this._updateLiksCount(this._liksArr.length);
+    };
     return this._element;
   }
 }
