@@ -27,13 +27,22 @@ const handelDelIconClick = (card) => {
   popupWithConfirmation.open();
   popupWithConfirmation.sethandleFormSubmit(
     () =>
-      api.deleteCard(card.cardId)
-        .then((res) => { if (res) { popupWithConfirmation.close(); card.DeleteCard() } })
+      api.deleteCard(card.getCardId())
+        .then((res) => { if (res) { popupWithConfirmation.close(); card.deleteCard() } })
         .catch((err) => {
           console.log('Ошибка удаления карточки - ' + err.message)
         })
   )
 }
+
+const userInfo = new UserInfo('.profile__name', '.profile__job');
+api.getInitProfile()
+  .then(data =>
+    userInfo.setUserInfo(data)
+  )
+  .catch((err) => {
+    console.log('Ошибка отображения профиля - ' + err.message);
+  });
 
 const createCards = (cardObj) => {
   const card = new Card(({
@@ -41,7 +50,7 @@ const createCards = (cardObj) => {
     handleCardClick: (data) => { popupWithImage.open(data) },
     handelDelIconClick
   }), '#card-template');
-  const cardElement = card.generateCard();
+  const cardElement = card.generateCard(userInfo.getUserId());
   return cardElement;
 }
 
@@ -78,21 +87,11 @@ formValidatorCard.enableValidation();
 const popupEditProfile = new PopupWithForm(handleFormSubmitProfile, '.popup_form_editProfile');
 popupEditProfile.setEventListeners();
 
-const userInfo = new UserInfo('.profile__name', '.profile__job');
-api.getInitProfile()
-  .then(data =>
-    userInfo.setUserInfo(data.name, data.about)
-  )
-  .catch((err) => {
-    console.log('Ошибка отображения профиля - ' + err.message);
-  });
-
-
 function handleFormSubmitProfile(evt, { name, job }) {
   evt.preventDefault();
   api.updateProfile(name, job)
     .then(data =>
-      userInfo.setUserInfo(data.name, data.about)
+      userInfo.setUserInfo(data)
     )
     .catch((err) => {
       console.log('Ошибка ообновления профиля - ' + err.message);

@@ -12,9 +12,14 @@ export default class UserInfo {
     })
   }
 
-  setUserInfo(name,job) {
-    this._dataProfile.nameElement.textContent = name;
-    this._dataProfile.jobElement.textContent = job;
+  getUserId(){
+    return this._data._id;
+  }
+
+  setUserInfo(data) {
+    this._data = data;
+    this._dataProfile.nameElement.textContent = data.name;
+    this._dataProfile.jobElement.textContent = data.about;
   }
 }
 

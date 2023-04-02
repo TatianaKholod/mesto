@@ -1,11 +1,11 @@
 import Popup from './Popup.js';
 
 export default class PopupWithConfirmation extends Popup {
-  constructor( selector) {
+  constructor(selector) {
     super(selector);
   }
 
-  sethandleFormSubmit(handleFormSubmit){
+  sethandleFormSubmit(handleFormSubmit) {
     this._handleFormSubmit = handleFormSubmit;
   }
 

@@ -2,8 +2,9 @@ export default class Card {
   constructor({ cardObj: data, handleCardClick, handelDelIconClick }, templateSelector) {
     this._link = data.link;
     this._name = data.name;
-    this.cardId = data._id;
+    this._cardId = data._id;
     this._liksCount = data.likes.length;
+    this._ownerId = data.owner._id;
     this._templateSelector = templateSelector;
     this._handleCardClick = handleCardClick;
     this._handelDelIconClick = handelDelIconClick;
@@ -23,8 +24,11 @@ export default class Card {
     evt.target.classList.toggle('gallery__like-toggle_on');
   }
 
-  DeleteCard() {
+  deleteCard() {
     this._element.remove();
+  }
+  getCardId() {
+    return this._cardId;
   }
 
   _handleOpenPopup() {
@@ -36,17 +40,23 @@ export default class Card {
       this._handleToggleLike(evt);
     });
 
-    this._element.querySelector('.gallery__card-delete').addEventListener('click', () => {
-      this._handelDelIconClick(this);
-    });
-
     this._cardImage.addEventListener('click', () => {
       this._handleOpenPopup();
     });
   }
 
-  generateCard() {
+  _setEventListenerDel() {
+    this._element.querySelector('.gallery__card-delete').addEventListener('click', () => {
+      this._handelDelIconClick(this);
+    });
+  }
+
+  generateCard(userId) {
     this._element = this._getTemplate();
+
+    if (this._ownerId != userId) { this._element.querySelector('.gallery__card-delete').remove(); }
+    else
+      this._setEventListenerDel();
 
     this._cardImage = this._element.querySelector('.gallery__card-image');
     this._cardImage.src = this._link;
@@ -54,7 +64,7 @@ export default class Card {
 
     this._element.querySelector('.gallery__text-name').textContent = this._name;
 
-    this._element.querySelector('.gallery__like-counter').textContent = (this._liksCount > 0)? this._liksCount : '';
+    this._element.querySelector('.gallery__like-counter').textContent = (this._liksCount > 0) ? this._liksCount : '';
 
     this._setEventListeners();
 
