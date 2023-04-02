@@ -92,14 +92,18 @@ const galleryList = new Section(createCards, '.gallery__card-list');
 
 function handleFormSubmitAddCard(evt, cardObj) {
   evt.preventDefault();
+  popupCardAdd.running(true);
   api.createNewCard(cardObj['name-card'], cardObj['src-card'])
     .then((dataCard) => {
       galleryList.addItem(createCards(dataCard));
     })
     .catch((err) => {
       console.log('Ошибка добавления карточки - ' + err.message);
+    })
+    .finally(() => {
+      popupCardAdd.running(false);
+      popupCardAdd.closeSubmit();
     });
-  popupCardAdd.closeSubmit();
 }
 
 const popupCardAdd = new PopupWithForm(handleFormSubmitAddCard, '.popup_form_addCard');
@@ -115,14 +119,18 @@ popupEditProfile.setEventListeners();
 
 function handleFormSubmitProfile(evt, { name, job }) {
   evt.preventDefault();
+  popupEditProfile.running(true);
   api.updateProfile(name, job)
     .then(data =>
       userInfo.setUserInfo(data)
     )
     .catch((err) => {
       console.log('Ошибка ообновления профиля - ' + err.message);
+    })
+    .finally(() => {
+      popupEditProfile.running(false);
+      popupEditProfile.close();
     });
-  popupEditProfile.close();
 }
 
 //валидация профиля
@@ -137,16 +145,16 @@ document.querySelector('.profile__edit-button').addEventListener('click', () => 
 
 function handleFormSubmitAvatar(evt, { 'src-avatar': srcAvatar }) {
   evt.preventDefault();
-  //Здесь нужно обновить аватар
+  popupUpdateAvatar.running(true);
   api.updateAvatar(srcAvatar)
-    .then(data =>
-      userInfo.setUserAvatar(data)
-    )
+    .then(data => userInfo.setUserAvatar(data))
     .catch((err) => {
       console.log('Ошибка обновления аватара - ' + err.message);
+    })
+    .finally(() => {
+      popupUpdateAvatar.running(false);
+      popupUpdateAvatar.close();
     });
-
-  popupUpdateAvatar.close();
 }
 
 const popupUpdateAvatar = new PopupWithForm(handleFormSubmitAvatar, '.popup_form_updateAvatar');
