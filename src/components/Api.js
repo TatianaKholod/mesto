@@ -113,4 +113,21 @@ export default class Api {
         console.log('Запрос не выполнен - ' + err.message);
       });
   }
+  updateAvatar(avatar){
+     return fetch(`${this.baseUrl}/users/me/avatar`, {
+      method: 'PATCH',
+      headers: this.headers,
+      body: JSON.stringify({
+        avatar: avatar
+      })
+    })
+      .then(res => {
+        if (res.ok)
+          return res.json();
+        return Promise.reject(`Ошибка: ${res.status}`);
+      })
+      .catch((err) => {
+        console.log('Запрос не выполнен - ' + err.message);
+      });
+  }
 }

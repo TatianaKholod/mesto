@@ -35,10 +35,12 @@ const handelDelIconClick = (card) => {
   )
 }
 
-const userInfo = new UserInfo('.profile__name', '.profile__job');
+const userInfo = new UserInfo('.profile__name', '.profile__job', '.profile__avatar');
 api.getInitProfile()
-  .then(data =>
-    userInfo.setUserInfo(data)
+  .then(data => {
+    userInfo.setUserInfo(data);
+    userInfo.setUserAvatar(data);
+  }
   )
   .catch((err) => {
     console.log('Ошибка отображения профиля - ' + err.message);
@@ -132,4 +134,32 @@ document.querySelector('.profile__edit-button').addEventListener('click', () => 
   popupEditProfile.setInputValues(userInfo.getUserInfo(), formValidatorProfile.hideInputError);
   popupEditProfile.open();
 });
+
+function handleFormSubmitAvatar(evt, { 'src-avatar': srcAvatar }) {
+  evt.preventDefault();
+  //Здесь нужно обновить аватар
+  api.updateAvatar(srcAvatar)
+    .then(data =>
+      userInfo.setUserAvatar(data)
+    )
+    .catch((err) => {
+      console.log('Ошибка обновления аватара - ' + err.message);
+    });
+
+  popupUpdateAvatar.close();
+}
+
+const popupUpdateAvatar = new PopupWithForm(handleFormSubmitAvatar, '.popup_form_updateAvatar');
+popupUpdateAvatar.setEventListeners();
+
+//валидация формы обновления аватара
+const formValidatorAvatar = new FormValidator(configForm, popupUpdateAvatar.getFormElement());
+formValidatorAvatar.enableValidation();
+
+//слушатель на кнопку, вызывающую форму обновления аватара
+document.querySelector('.profile__update-avatar').addEventListener('click', () => {
+  popupUpdateAvatar.setInputValues(userInfo.getUserAvatar(), formValidatorAvatar.hideInputError);
+  popupUpdateAvatar.open();
+});
+
 

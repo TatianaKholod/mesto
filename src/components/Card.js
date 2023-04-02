@@ -81,7 +81,6 @@ export default class Card {
     this._element.querySelector('.gallery__text-name').textContent = this._name;
 
     this._elementLikeCounter = this._element.querySelector('.gallery__like-counter');
-    //this._updateLiksCount(this._liksArr.length);
 
     this._setEventListeners();
     if (this.isLiked(userId)) {
