@@ -4,34 +4,25 @@ export default class Api {
     this.headers = options.headers;
   }
 
+  _checkResponse(res) {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Ошибка: ${res.status}`)
+  }
+
   getInitialCards() {
     return fetch(`${this.baseUrl}/cards`, {
       headers: this.headers
     })
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Ошибка: ${res.status}`)
-      })
-      .catch((err) => {
-        console.log('Запрос не выполнен - ' + err.message);
-      });
+      .then(this._checkResponse);
   }
 
   getInitProfile() {
     return fetch(`${this.baseUrl}/users/me`, {
       headers: this.headers
     })
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Ошибка: ${res.status}`)
-      })
-      .catch((err) => {
-        console.log('Запрос не выполнен - ' + err.message);
-      });
+      .then(this._checkResponse);
   }
 
   updateProfile(name, job) {
@@ -43,15 +34,9 @@ export default class Api {
         about: job
       })
     })
-      .then(res => {
-        if (res.ok)
-          return res.json();
-        return Promise.reject(`Ошибка: ${res.status}`);
-      })
-      .catch((err) => {
-        console.log('Запрос не выполнен - ' + err.message);
-      });
+      .then(this._checkResponse);
   }
+
   createNewCard(name, link) {
     return fetch(`${this.baseUrl}/cards`, {
       method: 'POST',
@@ -61,28 +46,14 @@ export default class Api {
         link: link
       })
     })
-      .then(res => {
-        if (res.ok)
-          return res.json();
-        return Promise.reject(`Ошибка: ${res.status}`);
-      })
-      .catch((err) => {
-        console.log('Запрос не выполнен - ' + err.message);
-      });
+      .then(this._checkResponse);
   }
   deleteCard(cardId) {
     return fetch(`${this.baseUrl}/cards/${cardId}`, {
       method: 'DELETE',
       headers: this.headers
     })
-      .then(res => {
-        if (res.ok)
-          return true;
-        return Promise.reject(`Ошибка: ${res.status}`);
-      })
-      .catch((err) => {
-        console.log('Запрос не выполнен - ' + err.message);
-      });
+      .then(this._checkResponse);
   }
 
   setLikeCard(cardId) {
@@ -90,44 +61,24 @@ export default class Api {
       method: 'PUT',
       headers: this.headers
     })
-      .then(res => {
-        if (res.ok)
-          return res.json();
-        return Promise.reject(`Ошибка: ${res.status}`);
-      })
-      .catch((err) => {
-        console.log('Запрос не выполнен - ' + err.message);
-      });
+      .then(this._checkResponse);
   }
   delLikeCard(cardId) {
     return fetch(`${this.baseUrl}/cards/likes/${cardId}`, {
       method: 'DELETE',
       headers: this.headers
     })
-      .then(res => {
-        if (res.ok)
-          return res.json();
-        return Promise.reject(`Ошибка: ${res.status}`);
-      })
-      .catch((err) => {
-        console.log('Запрос не выполнен - ' + err.message);
-      });
+      .then(this._checkResponse);
   }
-  updateAvatar(avatar){
-     return fetch(`${this.baseUrl}/users/me/avatar`, {
+
+  updateAvatar(avatar) {
+    return fetch(`${this.baseUrl}/users/me/avatar`, {
       method: 'PATCH',
       headers: this.headers,
       body: JSON.stringify({
         avatar: avatar
       })
     })
-      .then(res => {
-        if (res.ok)
-          return res.json();
-        return Promise.reject(`Ошибка: ${res.status}`);
-      })
-      .catch((err) => {
-        console.log('Запрос не выполнен - ' + err.message);
-      });
+      .then(this._checkResponse);
   }
 }

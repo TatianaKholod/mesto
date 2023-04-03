@@ -11,6 +11,7 @@
   background-position: center;
   grid-row: 1 / 1;
   grid-column: 1 / 1;
+  justify-self: center;
 }
 
 .profile__update-avatar:hover {
