@@ -37,6 +37,18 @@ export default class Api {
       .then(this._checkResponse);
   }
 
+  testSrc(pathSrc) {
+    return fetch(pathSrc, {
+      method: 'HEAD'
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.url;
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+      })
+  }
+
   createNewCard(name, link) {
     return fetch(`${this.baseUrl}/cards`, {
       method: 'POST',

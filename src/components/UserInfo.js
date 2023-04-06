@@ -21,12 +21,20 @@ export default class UserInfo {
     return ({ 'src-avatar': this._data.avatar});
   }
 
-  setUserAvatar(data){
+  setUserAvatar(srcAvatar){
+      const src = this._dataProfile.avatarElement.src;
+      const p = new Promise((resolve,reject) => {
+      this._dataProfile.avatarElement.src = srcAvatar;
+      this._dataProfile.avatarElement.onload = () => resolve(srcAvatar);
+      this._dataProfile.avatarElement.onerror = () => {reject('Ошибка загрузки изображения аватара.'); this._dataProfile.avatarElement.src = src}
+      });
+     return p;
+  }
+  updateDataUser(data) {
     this._data = data;
-    this._dataProfile.avatarElement.src = data.avatar;
   }
   setUserInfo(data) {
-    this._data = data;
+    this.updateDataUser(data);
     this._dataProfile.nameElement.textContent = data.name;
     this._dataProfile.jobElement.textContent = data.about;
   }

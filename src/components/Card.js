@@ -25,6 +25,10 @@ export default class Card {
     this._elementLikeCounter.textContent = (liksCount > 0) ? liksCount : '';
   }
 
+  getCardId() {
+    return this._cardId;
+  }
+
   addLike() {
     this._likeElement.classList.add('gallery__like-toggle_on');
     this._updateLiksCount(this._liksArr.length);

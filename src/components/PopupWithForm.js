@@ -25,13 +25,12 @@ export default class PopupWithForm extends Popup {
   setEventListeners() {
     this._formElement = this._popup.querySelector('.popup__form');
     this._btnSubmitElement = this._formElement.querySelector('.popup__button-save');
-    //this._textSubmitBtn = this._btnSubmitElement.textContent;
     this._inputList = this._formElement.querySelectorAll('.popup__input');
     this._formElement.addEventListener('submit', (evt) => {
       const initialText = this._btnSubmitElement.textContent;
       this._btnSubmitElement.textContent = "Сохранение...";
       this._handleFormSubmit(evt, this._getInputValues())
-        .then(() => this.close())
+        .then((res) => { if (res) this.close() })
         .finally(() => { this._btnSubmitElement.textContent = initialText });
     });
     super.setListenerClosePopup();
